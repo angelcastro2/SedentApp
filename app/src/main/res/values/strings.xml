@@ -27,4 +27,14 @@
     <string name="tiempoActividad">Tiempo de actividad</string>
     <string name="horas_unidad">h</string>
     
+    <!-- Objetivos dialog -->
+    <string name="objetivos_dialog_titulo">Editar objetivo</string>
+    <string name="objetivos_dialog_activo">Activo</string>
+    <string name="objetivo_generico_dialog">Objetivo</string>
+
+
+    <!-- Generico -->
+    <string name="guardar">Guardar</string>
+    <string name="cancelar">Cancelar</string>
+
 </resources>
