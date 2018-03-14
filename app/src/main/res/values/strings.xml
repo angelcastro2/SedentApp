@@ -13,4 +13,28 @@
     <string name="menu_ajustes">Ajustes</string>
     <string name="menu_acerca_de">Acerca de</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    
+    <!-- Objetivos fragment -->
+    <string name="objetivos">Objetivos</string>
+    <string name="pasos_titulo">Pasos</string>
+    <string name="pasos_unidad">pasos</string>
+    <string name="distancia">Distancia</string>
+    <string name="km_unidad">Km</string>
+    <string name="peso">Peso</string>
+    <string name="kg_unidad">Kg</string>
+    <string name="tiempoActividad">Tiempo de actividad</string>
+    <string name="horas_unidad">h</string>
+    
+    <!-- Objetivos dialog -->
+    <string name="objetivos_dialog_titulo">Editar objetivo</string>
+    <string name="objetivos_dialog_activo">Activo</string>
+    <string name="objetivo_generico_dialog">Objetivo</string>
+
+
+    <!-- Generico -->
+    <string name="guardar">Guardar</string>
+    <string name="cancelar">Cancelar</string>
+
 </resources>
