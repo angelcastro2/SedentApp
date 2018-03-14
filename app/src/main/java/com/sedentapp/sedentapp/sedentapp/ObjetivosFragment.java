@@ -115,6 +115,38 @@ public class ObjetivosFragment extends Fragment {
             }
         });
 
+        ImageButton buttondistancia = (ImageButton) getView().findViewById(R.id.boton_edit_distancia);
+        buttondistancia.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                //Toast.makeText(getActivity(), "Button Clicked", Toast.LENGTH_LONG).show();
+                String distancia = getResources().getString(R.string.distancia);
+                personalizarObjetivoDialog(distancia);
+            }
+        });
+
+
+        ImageButton buttonpeso = (ImageButton) getView().findViewById(R.id.boton_edit_peso);
+        buttonpeso.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                //Toast.makeText(getActivity(), "Button Clicked", Toast.LENGTH_LONG).show();
+                String peso = getResources().getString(R.string.peso);
+                personalizarObjetivoDialog(peso);
+            }
+        });
+
+        ImageButton buttonTiempoActividad = (ImageButton) getView().findViewById(R.id.boton_edit_tiempoActividad);
+        buttonTiempoActividad.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                //Toast.makeText(getActivity(), "Button Clicked", Toast.LENGTH_LONG).show();
+                String tiempoActividad = getResources().getString(R.string.tiempoActividad);
+                personalizarObjetivoDialog(tiempoActividad);
+            }
+        });
+
+
     }
 
     public int getObjetivo_pasos() {

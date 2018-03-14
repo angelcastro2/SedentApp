@@ -111,7 +111,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/ic_edit_objetivo" />
+                    android:src="@drawable/ic_edit_objetivo"
+                    android:id="@+id/boton_edit_distancia"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -170,7 +171,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/ic_edit_objetivo" />
+                    android:src="@drawable/ic_edit_objetivo"
+                    android:id="@+id/boton_edit_peso"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -228,7 +230,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/ic_edit_objetivo" />
+                    android:src="@drawable/ic_edit_objetivo"
+                    android:id="@+id/boton_edit_tiempoActividad"/>
             </RelativeLayout>
 
             <LinearLayout
