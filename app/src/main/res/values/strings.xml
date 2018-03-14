@@ -15,5 +15,16 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    
+    <!-- Objetivos fragment -->
+    <string name="objetivos">Objetivos</string>
+    <string name="pasos_titulo">Pasos</string>
+    <string name="pasos_unidad">pasos</string>
+    <string name="distancia">Distancia</string>
+    <string name="km_unidad">Km</string>
+    <string name="peso">Peso</string>
+    <string name="kg_unidad">Kg</string>
+    <string name="tiempoActividad">Tiempo de actividad</string>
+    <string name="horas_unidad">h</string>
+    
 </resources>
