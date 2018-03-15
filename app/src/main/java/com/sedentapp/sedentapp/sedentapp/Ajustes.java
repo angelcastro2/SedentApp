@@ -33,22 +33,42 @@ public class Ajustes extends AppCompatActivity implements AdapterView.OnItemSele
         });
 
         Spinner sound_spinner = (Spinner) findViewById(R.id.sound_spinner);
+        Spinner led_spinner = (Spinner) findViewById(R.id.led_spinner);
+        Spinner vibration_spinner = (Spinner) findViewById(R.id.vibration_spinner);
 
         sound_spinner.setOnItemSelectedListener(this);
+        led_spinner.setOnItemSelectedListener(this);
+        vibration_spinner.setOnItemSelectedListener(this);
 
-        List<String> categories = new ArrayList<String>();
-        categories.add("Fresh.mp3");
-        categories.add("Superhit.mp3");
-        categories.add("Song2");
+        List<String> sounds = new ArrayList<String>();
+        sounds.add("Fresh.mp3");
+        sounds.add("Superhit.mp3");
+        sounds.add("Song2");
 
+        List<String> vibrations = new ArrayList<String>();
+        vibrations.add("Corta");
+        vibrations.add("Larga");
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+        List<String> colors = new ArrayList<String>();
+        colors.add("Rojo");
+        colors.add("Verde");
+        colors.add("Azul");
+        colors.add("Blanco");
+
+        ArrayAdapter<String> soundAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sounds);
+        ArrayAdapter<String> vibrationAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, vibrations);
+        ArrayAdapter<String> colorAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, colors);
 
         // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        soundAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        vibrationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        colorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // attaching data adapter to spinner
-      sound_spinner.setAdapter(dataAdapter);
+        sound_spinner.setAdapter(soundAdapter);
+        vibration_spinner.setAdapter(vibrationAdapter);
+        led_spinner.setAdapter(colorAdapter);
+
     }
 
     @Override
