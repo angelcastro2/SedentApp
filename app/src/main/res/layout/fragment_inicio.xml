@@ -1,0 +1,94 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true">
+
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imavgeView"
+            android:src="@drawable/hist"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_column="1">
+
+                <TextView
+                    android:paddingRight="30dp"
+                    android:layout_width="match_parent"
+                    android:text="Pasos caminados:\n5432"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:layout_height="match_parent"
+                    android:id="@+id/step_counter"
+                    android:textSize="20dp"
+                    android:textColor="#ffffff"
+                    android:background="#00796b" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Peso corporal:\n79 kg."
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:layout_height="match_parent"
+                    android:id="@+id/bodyweight"
+                    android:textColor="#ffffff"
+                    android:background="#00796b"
+                    android:textSize="20sp" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_column="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Tiempo de inactividad:\n2 h. 31 min"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+                    android:background="#00796b"
+                    android:layout_height="match_parent"
+                    android:id="@+id/inactivity"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Distancia recorrida:\n 4,5 km."
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:background="#00796b"
+                    android:id="@+id/distance"
+                    android:textColor="#ffffff"
+                    android:layout_height="match_parent"
+                    android:textSize="20dp" />
+
+            </TableRow>
+
+        </TableLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>
