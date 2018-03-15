@@ -1,5 +1,7 @@
 package com.sedentapp.sedentapp.sedentapp;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -115,8 +117,9 @@ public class MainActivity extends AppCompatActivity
                 fragmentManager.popBackStack();
             }
             fragmentTransaction.replace(R.id.MainContainer,fragment);
-        } else if (id == R.id.nav_share) {
-
+        } else if (id == R.id.nav_ajustes) {
+            Intent intent = new Intent(this, Ajustes.class);
+            startActivity(intent);
         } else if (id == R.id.nav_send) {
 
         }
