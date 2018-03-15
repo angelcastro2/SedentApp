@@ -8,7 +8,7 @@
             android:id="@+id/nav_camera"
             android:title="@string/menu_inicio" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_actividad"
             android:title="@string/menu_actividad" />
         <item
             android:id="@+id/nav_objetivos"

@@ -96,8 +96,12 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
+        } else if (id == R.id.nav_actividad) {
+            Fragment fragment = new ActividadFragment();
+            for(int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
+                fragmentManager.popBackStack();
+            }
+            fragmentTransaction.replace(R.id.MainContainer,fragment);
         } else if (id == R.id.nav_objetivos) {
             Fragment fragment = new ObjetivosFragment();
             for(int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {

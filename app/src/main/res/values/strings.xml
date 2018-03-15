@@ -37,4 +37,14 @@
     <string name="guardar">Guardar</string>
     <string name="cancelar">Cancelar</string>
 
+    <!-- Actividad fragment -->
+    <string name="actividad_mes">Abril</string>
+
+    <!-- Actividad spinner -->
+    <string-array name="spinner_actividad_array">
+        <item>Mensual</item>
+        <item>Diario</item>
+        <item>Anual</item>
+    </string-array>
+
 </resources>
