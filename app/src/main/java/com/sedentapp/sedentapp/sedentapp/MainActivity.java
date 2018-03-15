@@ -26,14 +26,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+/*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -109,8 +109,12 @@ public class MainActivity extends AppCompatActivity
                 fragmentManager.popBackStack();
             }
             fragmentTransaction.replace(R.id.MainContainer,fragment);
-        } else if (id == R.id.nav_manage) {
-
+        } else if (id == R.id.nav_perfil) {
+            Fragment fragment = new PerfilFragment();
+            for(int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
+                fragmentManager.popBackStack();
+            }
+            fragmentTransaction.replace(R.id.MainContainer,fragment);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
