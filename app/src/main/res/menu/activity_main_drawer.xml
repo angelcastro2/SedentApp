@@ -14,7 +14,7 @@
             android:id="@+id/nav_objetivos"
             android:title="@string/menu_objetivos" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_perfil"
             android:title="@string/menu_perfil" />
 
 
