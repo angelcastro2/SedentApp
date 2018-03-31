@@ -62,4 +62,9 @@
     <!-- Inicio fragment -->
     <string name="tiempoInactividad">Tiempo de Inactividad</string>
 
+    <!-- About fragment -->
+    <string name="app_info">El objetivo de esta aplicación es ayudarlo a monitorizar y controlar el sedentarismo</string>
+    <string name="autores_titulo">Autores</string>
+    <string name="autores_texto">Información de los autores de la app</string>
+
 </resources>

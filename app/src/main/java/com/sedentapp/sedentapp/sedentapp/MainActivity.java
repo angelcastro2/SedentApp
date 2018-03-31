@@ -124,8 +124,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_ajustes) {
             Intent intent = new Intent(this, Ajustes.class);
             startActivity(intent);
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_about) {
+            Fragment fragment = new AboutFragment();
+            for(int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
+                fragmentManager.popBackStack();
+            }
+            fragmentTransaction.replace(R.id.MainContainer,fragment);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
