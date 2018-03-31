@@ -69,37 +69,37 @@ public class InicioFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        TextView step_counter_but = (TextView) getView().findViewById(R.id.step_counter);
-        step_counter_but.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                Log.d(TAG,"Step counter clicked");
-            }
-        });
-
-        TextView bodyweight_but = (TextView) getView().findViewById(R.id.bodyweight);
-        bodyweight_but.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                Log.d(TAG,"Bodyweight button clicked");
-            }
-        });
-
-        TextView inactivity_but = (TextView) getView().findViewById(R.id.inactivity);
-        inactivity_but.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                Log.d(TAG,"Inactivity button clicked");
-            }
-        });
-
-        TextView distance_but = (TextView) getView().findViewById(R.id.distance);
-        distance_but.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                Log.d(TAG,"Distance button clicked");
-            }
-        });
+//        TextView step_counter_but = (TextView) getView().findViewById(R.id.step_counter);
+//        step_counter_but.setOnClickListener(new View.OnClickListener() {
+//
+//            public void onClick(View v) {
+//                Log.d(TAG,"Step counter clicked");
+//            }
+//        });
+//
+//        TextView bodyweight_but = (TextView) getView().findViewById(R.id.bodyweight);
+//        bodyweight_but.setOnClickListener(new View.OnClickListener() {
+//
+//            public void onClick(View v) {
+//                Log.d(TAG,"Bodyweight button clicked");
+//            }
+//        });
+//
+//        TextView inactivity_but = (TextView) getView().findViewById(R.id.inactivity);
+//        inactivity_but.setOnClickListener(new View.OnClickListener() {
+//
+//            public void onClick(View v) {
+//                Log.d(TAG,"Inactivity button clicked");
+//            }
+//        });
+//
+//        TextView distance_but = (TextView) getView().findViewById(R.id.distance);
+//        distance_but.setOnClickListener(new View.OnClickListener() {
+//
+//            public void onClick(View v) {
+//                Log.d(TAG,"Distance button clicked");
+//            }
+//        });
     }
 
     @Override

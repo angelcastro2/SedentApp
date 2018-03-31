@@ -1,94 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:williamchart="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/chart_card"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true">
-
+        android:layout_height="240dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        williamchart:cardCornerRadius="2dp">
 
 
         <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/activity_graphic" />
+    </android.support.v7.widget.CardView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        android:weightSum="2"
+        android:layout_margin="@dimen/activity_horizontal_margin">
+
+
+        <!-- 2 images in a row -->
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/imavgeView"
-            android:src="@drawable/hist"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:weightSum="2" >
 
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
 
-            <TableRow
+
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_column="1">
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/colorAccent">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:text="Pasos caminados:\n5432"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
                     android:layout_height="match_parent"
-                    android:id="@+id/step_counter"
-                    android:textSize="20dp"
-                    android:textColor="#ffffff"
-                    android:background="#00796b" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:text="Peso corporal:\n79 kg."
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:layout_height="match_parent"
-                    android:id="@+id/bodyweight"
-                    android:textColor="#ffffff"
-                    android:background="#00796b"
-                    android:textSize="20sp" />
+                    <TextView
+                        android:id="@+id/tv_inicio_pasos_titulo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pasos_titulo"
+                        android:textColor="@android:color/primary_text_dark"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:gravity="center_horizontal"/>
 
-            </TableRow>
+                    <TextView
+                        android:id="@+id/tv_inicio_pasos_valor"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="10.000"
+                        android:textColor="@android:color/primary_text_dark"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:gravity="center"/>
 
-            <TableRow
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_column="1">
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/colorAccent">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:text="Tiempo de inactividad:\n2 h. 31 min"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:textColor="#ffffff"
-                    android:background="#00796b"
                     android:layout_height="match_parent"
-                    android:id="@+id/inactivity"
-                    android:textSize="20dp" />
+                    android:orientation="vertical">
 
-                <TextView
+                    <TextView
+                        android:id="@+id/tv_inicio_peso_titulo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/peso"
+                        android:textColor="@android:color/primary_text_dark"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:gravity="center_horizontal"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tv_inicio_peso_valor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="75"
+                            android:textColor="@android:color/primary_text_dark"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:gravity="center"/>
+
+                        <TextView
+                            android:id="@+id/tv_inicio_peso_unidad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@string/kg_unidad"
+                            android:textColor="@android:color/primary_text_dark"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:paddingLeft="4dp"
+                            android:gravity="center"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <!-- ............... -->
+
+
+        <!-- 2 images in a row -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:weightSum="2" >
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/colorAccent">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:text="Distancia recorrida:\n 4,5 km."
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:background="#00796b"
-                    android:id="@+id/distance"
-                    android:textColor="#ffffff"
                     android:layout_height="match_parent"
-                    android:textSize="20dp" />
+                    android:orientation="vertical">
 
-            </TableRow>
+                    <TextView
+                        android:id="@+id/tv_inicio_tiempo_inactividad_titulo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tiempoInactividad"
+                        android:textColor="@android:color/primary_text_dark"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:gravity="center_horizontal"/>
 
-        </TableLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center">
 
+
+                        <TextView
+                            android:id="@+id/tv_inicio_tiempo_inactividad_valor"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="2 h 10 min"
+                            android:textColor="@android:color/primary_text_dark"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:gravity="center"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/colorAccent">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_inicio_distancia_titulo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/distancia"
+                        android:textColor="@android:color/primary_text_dark"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:gravity="center_horizontal"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tv_inicio_distancia_valor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="7"
+                            android:textColor="@android:color/primary_text_dark"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:gravity="center"/>
+
+                        <TextView
+                            android:id="@+id/tv_inicio_distancia_unidad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@string/km_unidad"
+                            android:textColor="@android:color/primary_text_dark"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:paddingLeft="4dp"
+                            android:gravity="center"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
 
     </LinearLayout>
+
 </LinearLayout>
