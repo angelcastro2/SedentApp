@@ -80,7 +80,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity
             }
             fragmentTransaction.replace(R.id.MainContainer,fragment);
         } else if (id == R.id.nav_ajustes) {
-            Intent intent = new Intent(this, Ajustes.class);
+            Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_about) {
             Fragment fragment = new AboutFragment();
