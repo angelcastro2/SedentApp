@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         //Cargamos el fragmento inicial e inicializamos el fragmentManager
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = new ObjetivosFragment();
+        Fragment fragment = new InicioFragment();
         fragmentTransaction.replace(R.id.MainContainer,fragment);
         fragmentTransaction.commit();
     }

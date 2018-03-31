@@ -9,11 +9,13 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
 
 
@@ -92,61 +94,34 @@ public class PerfilFragment extends Fragment {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Sign in Google", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Sign in Google", Toast.LENGTH_SHORT).show();
 
             }
         });
 
-        ImageButton button2 = (ImageButton) getView().findViewById(R.id.imageButton);
+        Button button2 = (Button) getView().findViewById(R.id.fb_login_button);
         button2.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Sign in FB", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Sign in FB", Toast.LENGTH_SHORT).show();
 
             }
         });
 
-        ImageButton boton_edit = (ImageButton) getView().findViewById(R.id.boton_edit);
+        ImageButton boton_edit = (ImageButton) getView().findViewById(R.id.btn_edit_nombre_perfil);
         boton_edit.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Editar 1", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Editar nombre", Toast.LENGTH_SHORT).show();
 
             }
         });
 
-        ImageButton boton_edit2 = (ImageButton) getView().findViewById(R.id.boton_edit2);
+        ImageButton boton_edit2 = (ImageButton) getView().findViewById(R.id.btn_edit_datos_perfil);
         boton_edit2.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Editar 2", Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-        ImageButton boton_edit4 = (ImageButton) getView().findViewById(R.id.boton_edit4);
-        boton_edit4.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Editar 4", Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-        ImageButton boton_edit5 = (ImageButton) getView().findViewById(R.id.boton_edit5);
-        boton_edit5.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Editar 5", Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-        ImageButton boton_edit6 = (ImageButton) getView().findViewById(R.id.boton_edit6);
-        boton_edit6.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Editar 6", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Editar datos", Toast.LENGTH_SHORT).show();
 
             }
         });

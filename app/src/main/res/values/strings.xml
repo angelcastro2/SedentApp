@@ -43,9 +43,20 @@
 
     <!-- Actividad spinner -->
     <string-array name="spinner_actividad_array">
-        <item>Mensual</item>
         <item>Diario</item>
+        <item>Mensual</item>
         <item>Anual</item>
     </string-array>
+
+    <!-- Perfil fragment -->
+    <string name="nombre_perfil">Nombre Apellido</string>
+    <string name="edad_perfil">Edad: </string>
+    <string name="estatura_perfil">Estatura: </string>
+    <string name="peso_perfil">Peso: </string>
+    <string name="redes_sociales">Redes sociales</string>
+    <string name="altura_unidad">cm</string>
+    <string name="zancada_perfil">Longitud de zancada:</string>
+    <string name="zancada_unidad">cm</string>
+    <string name="datos_personales_perfil">Datos personales</string>
 
 </resources>
