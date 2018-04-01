@@ -165,6 +165,8 @@ public class ActividadFragment extends Fragment {
         });
 
         BarChartView chart = (BarChartView) this.getActivity().findViewById(R.id.chart);
+        //llamamos a reset para evitar un crash de la app al volver del onPause
+        chart.reset();
         String[] labels = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"};//horizontal axis
         float[] values = {10f,20f,30f,40f,20f,100f,50f,30f,25f,5f,60f,10f,10f,20f,30f,40f,20f,100f,50f,30f,25f,5f,60f,10f}; //values
         BarSet dataset = new BarSet(labels, values);
