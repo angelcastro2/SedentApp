@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,9 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.db.chart.model.BarSet;
+import com.db.chart.view.BarChartView;
 
 
 /**
@@ -159,6 +163,18 @@ public class ActividadFragment extends Fragment {
                 return;
             }
         });
+
+        BarChartView chart = (BarChartView) this.getActivity().findViewById(R.id.chart);
+        String[] labels = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"};//horizontal axis
+        float[] values = {10f,20f,30f,40f,20f,100f,50f,30f,25f,5f,60f,10f,10f,20f,30f,40f,20f,100f,50f,30f,25f,5f,60f,10f}; //values
+        BarSet dataset = new BarSet(labels, values);
+        dataset.setColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
+        chart.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.white, null));
+        chart.addData(dataset);
+        chart.setLabelsColor(ResourcesCompat.getColor(getResources(), R.color.black, null));
+        chart.setAxisColor(ResourcesCompat.getColor(getResources(), R.color.black, null));
+        chart.show();
+
     }
 
     /**
