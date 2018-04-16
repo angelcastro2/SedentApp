@@ -247,7 +247,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
-            <Button
+            <LinearLayout
+                android:id="@+id/sign_out_and_disconnect"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/sign_out_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/salir_google" />
+
+            </LinearLayout>
+
+            <!--<Button
                 android:id="@+id/fb_login_button"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -256,7 +275,15 @@
                 android:textColor="@android:color/primary_text_dark"
                 android:background="#3b5998"
                 android:paddingHorizontal="@dimen/activity_vertical_margin"
-                />
+                />-->
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="57dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="30dp" />
 
         </LinearLayout>
 

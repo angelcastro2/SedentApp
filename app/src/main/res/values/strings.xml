@@ -58,6 +58,10 @@
     <string name="zancada_perfil">Longitud de zancada:</string>
     <string name="zancada_unidad">cm</string>
     <string name="datos_personales_perfil">Datos personales</string>
+    <string name="salir_google">Desconectar</string>
+    <string name="facebook_app_id">595917787453039</string>
+    <string name="fb_login_protocol_scheme">fb595917787453039</string>
+
 
     <!-- Inicio fragment -->
     <string name="tiempoInactividad">Tiempo de Inactividad</string>
