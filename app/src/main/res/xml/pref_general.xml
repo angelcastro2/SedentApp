@@ -45,6 +45,12 @@
         android:key="actividad_list"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="@string/tiempo_actividad_titulo_settings" />
+        android:title="@string/tiempo_actividad_titulo_settings"/>
+
+    <Preference
+        android:title="@string/pref_calibrar"
+        android:summary="@string/pref_step_calibration">
+        <intent android:action="com.sedentapp.sedentapp.sedentapp.CalibrationActivity"/>
+    </Preference>
 
 </PreferenceScreen>
