@@ -11,7 +11,7 @@
         android:layout_width="325dp"
         android:layout_height="95dp"
         android:layout_marginTop="44dp"
-        android:text="CalibrationText"
+        android:text="@string/calibration_description"
         android:textColor="@android:color/background_dark"
         android:typeface="normal"
         app:fontFamily="sans-serif"
@@ -24,7 +24,7 @@
         android:layout_width="171dp"
         android:layout_height="67dp"
         android:layout_marginTop="116dp"
-        android:text="get_location_button"
+        android:text="@string/start_calibration_button_text"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:layout_editor_absoluteX="107dp"
         tools:text="@string/start_calibration_button_text" />
