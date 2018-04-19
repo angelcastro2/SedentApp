@@ -197,6 +197,7 @@
     <string name="calibration_description">A continuación puedes mejorar la precisión con la que la aplicación calcula la distancia que haces. Para empezar pulsa el botón. A continuación realiza un recorrido exterior de más de 400 metros y vuelve a pulsar el botón. Listo!!</string>
     <string name="start_calibration_button_text">Empezar</string>
     <string name="end_calibration_button_text">Finalizar</string>
+    <string name="calibration_step_text">Calibrar</string>
 
 
 </resources>

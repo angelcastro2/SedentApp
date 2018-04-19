@@ -31,9 +31,7 @@ public class CalibrationActivity extends Activity implements View.OnClickListene
     private Location end_location;
     private Boolean start_flag = true;
 
-    private EditText editTextShowLocation;
     private Button buttonGetLocation;
-    private ProgressBar progress;
 
     private LocationManager locManager;
     private LocationListener locListener = new MyLocationListener();
@@ -54,7 +52,7 @@ public class CalibrationActivity extends Activity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        progress.setVisibility(View.VISIBLE);
+
         // exceptions will be thrown if provider is not permitted.
         try {
             gps_enabled = locManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -73,7 +71,7 @@ public class CalibrationActivity extends Activity implements View.OnClickListene
             builder.setPositiveButton("OK", this);
             builder.setNeutralButton("Cancel", this);
             builder.create().show();
-            progress.setVisibility(View.GONE);
+
         }
 
         if (gps_enabled) {
@@ -108,7 +106,17 @@ class MyLocationListener implements LocationListener {
             String accuracy = "Accuracy: " + location.getAccuracy();
             String time = "Time: " + location.getTime();
 
-            editTextShowLocation.setText(londitude + "\n" + latitude + "\n" + altitiude + "\n" + accuracy + "\n" + time);
+            AlertDialog alertDialog = new AlertDialog.Builder(CalibrationActivity.this).create();
+            alertDialog.setTitle("posicion");
+            alertDialog.setMessage(londitude + "," + latitude + "," + altitiude);
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+
 
         }
     }
@@ -134,7 +142,16 @@ class MyLocationListener implements LocationListener {
     @Override
     public void onClick(DialogInterface dialog, int which) {
         if(which == DialogInterface.BUTTON_NEUTRAL){
-            editTextShowLocation.setText("No se ha poido determinar la posición, habilite los permisos");
+            AlertDialog alertDialog = new AlertDialog.Builder(CalibrationActivity.this).create();
+            alertDialog.setTitle("Error");
+            alertDialog.setMessage("No se ha podido obtener localización");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
         }else if (which == DialogInterface.BUTTON_POSITIVE) {
             startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         }

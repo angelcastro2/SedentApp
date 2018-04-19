@@ -69,6 +69,7 @@
             <intent-filter>
                 <action android:name="com.sedentapp.sedentapp.sedentapp.CalibrationActivity" />
             </intent-filter>
+
         </activity>
     </application>
 

@@ -108,13 +108,14 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-        Button btnSignOut = (Button) getView().findViewById(R.id.sign_out_button);
-        btnSignOut.setOnClickListener(new View.OnClickListener() {
+        Button calibrateStepButton = (Button) getView().findViewById(R.id.calibrate_step_button);
+        // Capture button clicks
+        calibrateStepButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
 
-            public void onClick(View v) {
-                signOut();
-                Toast.makeText(getActivity(), "Sign out Google", Toast.LENGTH_SHORT).show();
-
+                // Start NewActivity.class
+                Intent calibrationIntent = new Intent(getActivity(), CalibrationActivity.class);
+                startActivity(calibrationIntent);
             }
         });
 
