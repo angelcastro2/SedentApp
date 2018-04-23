@@ -1,9 +1,12 @@
 package com.sedentapp.sedentapp.sedentapp.entities.registrodiario;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
-//TODO: ACABAR
+
+import java.sql.Date;
+
 @Entity
 public class RegistroDiario {
 
@@ -12,27 +15,29 @@ public class RegistroDiario {
     private Long registroDiarioId;
 
     @NonNull
-    private int hora;
+    @ColumnInfo(name = "fecha")
+    private Date fecha;
 
     @NonNull
+    @ColumnInfo(name = "pasos")
     private int pasos;
 
 
     public RegistroDiario(){
     }
 
-    public RegistroDiario(@NonNull int hora, @NonNull int pasos) {
-        this.hora = hora;
+    public RegistroDiario(@NonNull Date fecha, @NonNull int pasos) {
+        this.fecha = fecha;
         this.pasos = pasos;
     }
 
     @NonNull
-    public int getHora() {
-        return hora;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setHora(@NonNull int hora) {
-        this.hora = hora;
+    public void setFecha(@NonNull Date fecha) {
+        this.fecha = fecha;
     }
 
     @NonNull
@@ -48,7 +53,7 @@ public class RegistroDiario {
     public String toString() {
         return "RegistroDiario{" +
                 "registroDiarioId=" + registroDiarioId +
-                ", hora=" + hora +
+                ", fecha=" + fecha +
                 ", pasos=" + pasos +
                 '}';
     }

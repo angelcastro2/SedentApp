@@ -1,27 +1,31 @@
 package com.sedentapp.sedentapp.sedentapp.entities.registrodiario.dao;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
+import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.sedentapp.sedentapp.sedentapp.entities.registrodiario.RegistroDiario;
-//TODO: ACABAR
+
+import java.sql.Date;
+
 @Dao
-public class RegistroDiarioDao {
+public interface RegistroDiarioDao {
 
-    public RegistroDiario save(RegistroDiario registroDiario){
-        return null;
-    }
+    @Insert
+    void save(RegistroDiario registroDiario);
 
-    public RegistroDiario find(int registroDiarioId){
-        return null;
-    }
+    @Query("SELECT * FROM RegistroDiario WHERE registroDiarioId = :registroDiarioId")
+    RegistroDiario find(int registroDiarioId);
 
-    public RegistroDiario update (RegistroDiario registroDiario){
-        return null;
-    }
+    @Query("SELECT pasos FROM RegistroDiario WHERE fecha = :fecha")
+    Integer getPasosByFecha(Date fecha);
 
-    public void delete(RegistroDiario registroDiario){
+    @Update
+    RegistroDiario update (RegistroDiario registroDiario);
 
-    }
-
+    @Delete
+    void delete(RegistroDiario registroDiario);
 
 }
