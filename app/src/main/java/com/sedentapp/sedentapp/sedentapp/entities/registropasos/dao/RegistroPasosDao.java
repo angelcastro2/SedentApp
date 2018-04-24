@@ -19,8 +19,11 @@ public interface RegistroPasosDao {
     @Query("SELECT * FROM RegistroPasos WHERE registroPasosId = :registroPasosId")
     RegistroPasos find(int registroPasosId);
 
-    @Query("SELECT * FROM REGISTROPASOS WHERE dia = :dia AND mes = :mes AND ano = :ano AND hora = :hora")
-    RegistroPasos getPAsosByFechaAndHora(int dia, int mes, int ano, int hora);
+    @Query("SELECT * FROM RegistroPasos WHERE dia = :dia AND mes = :mes AND ano = :ano AND hora = :hora")
+    RegistroPasos getPasosByFechaAndHora(int dia, int mes, int ano, int hora);
+
+    @Query("SELECT SUM(pasos) FROM RegistroPasos WHERE dia = :dia AND mes = :mes AND ano = :ano")
+    RegistroPasos getPasosByDia(int dia, int mes, int ano);
 
     @Update
     void update (RegistroPasos registroPasos);

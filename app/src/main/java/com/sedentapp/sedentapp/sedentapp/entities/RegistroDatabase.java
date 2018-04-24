@@ -10,5 +10,5 @@ import com.sedentapp.sedentapp.sedentapp.entities.registropasos.dao.RegistroPaso
 
 @Database(entities = {RegistroPasos.class}, version = 1, exportSchema = false)
 public abstract class RegistroDatabase extends RoomDatabase{
-    public abstract RegistroPasosDao registroHoraDao() ;
+    public abstract RegistroPasosDao registroPasosDao() ;
 }
