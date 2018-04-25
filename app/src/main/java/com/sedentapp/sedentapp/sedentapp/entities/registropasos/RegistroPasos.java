@@ -103,6 +103,32 @@ public class RegistroPasos {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RegistroPasos)) return false;
+
+        RegistroPasos that = (RegistroPasos) o;
+
+        if (getDia() != that.getDia()) return false;
+        if (getMes() != that.getMes()) return false;
+        if (getAno() != that.getAno()) return false;
+        if (getHora() != that.getHora()) return false;
+        if (getPasos() != that.getPasos()) return false;
+        return getRegistroPasosId().equals(that.getRegistroPasosId());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getRegistroPasosId().hashCode();
+        result = 31 * result + getDia();
+        result = 31 * result + getMes();
+        result = 31 * result + getAno();
+        result = 31 * result + getHora();
+        result = 31 * result + getPasos();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "RegistroPasos{" +
                 "registroPasosId=" + registroPasosId +
