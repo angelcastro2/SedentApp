@@ -45,6 +45,6 @@
         android:key="actividad_list"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="@string/tiempo_actividad_titulo_settings" />
+        android:title="@string/tiempo_actividad_titulo_settings"/>
 
 </PreferenceScreen>

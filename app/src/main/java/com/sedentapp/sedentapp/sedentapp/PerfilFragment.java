@@ -1,46 +1,47 @@
 package com.sedentapp.sedentapp.sedentapp;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link PerfilFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PerfilFragment extends Fragment {
 
-        public PerfilFragment() {
+    private static final String TAG = "SignInActivity";
+    private static final int RC_SIGN_IN = 9001;
+
+    private GoogleSignInClient mGoogleSignInClient;
+    private LoginButton loginButton;
+    private CallbackManager callbackManager;
+
+    public PerfilFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ObjetivosFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static PerfilFragment newInstance(String param1, String param2) {
         PerfilFragment fragment = new PerfilFragment();
         Bundle args = new Bundle();
@@ -51,62 +52,81 @@ public class PerfilFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this.getActivity(), gso);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_perfil, container, false);
+
+        callbackManager = CallbackManager.Factory.create();
+        loginButton = (LoginButton) view.findViewById(R.id.login_button);
+        loginButton.setReadPermissions("user_friends");
+        loginButton.setFragment(this);
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Toast.makeText(getActivity(), "Login successful", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(getActivity(), "Login canceled", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                Toast.makeText(getActivity(), "Login error", Toast.LENGTH_SHORT).show();
+            }
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_perfil, container, false);
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-//        mListener = null;
-    }
 
     @Override
     public void onStart() {
         super.onStart();
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this.getContext());
+        updateUI(account);
+
         SignInButton btnSignIn = (SignInButton) getView().findViewById(R.id.sign_in_button);
         btnSignIn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
+                signIn();
                 Toast.makeText(getActivity(), "Sign in Google", Toast.LENGTH_SHORT).show();
 
             }
         });
 
-        Button button2 = (Button) getView().findViewById(R.id.fb_login_button);
+        Button calibrateStepButton = (Button) getView().findViewById(R.id.calibrate_step_button);
+        // Capture button clicks
+        calibrateStepButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                // Start NewActivity.class
+                Intent calibrationIntent = new Intent(getActivity(), CalibrationActivity.class);
+                startActivity(calibrationIntent);
+            }
+        });
+
+        /*Button button2 = (Button) getView().findViewById(R.id.fb_login_button);
         button2.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Sign in FB", Toast.LENGTH_SHORT).show();
 
             }
-        });
+        });*/
 
         ImageButton boton_edit = (ImageButton) getView().findViewById(R.id.btn_edit_nombre_perfil);
         boton_edit.setOnClickListener(new View.OnClickListener() {
@@ -127,21 +147,66 @@ public class PerfilFragment extends Fragment {
         });
     }
 
-     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }else {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // Signed in successfully, show authenticated UI.
+            updateUI(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            updateUI(null);
+        }
+    }
+
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this.getActivity(), new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // [START_EXCLUDE]
+                        updateUI(null);
+                        // [END_EXCLUDE]
+                    }
+                });
+    }
+
+    private void updateUI(@Nullable GoogleSignInAccount account) {
+        if (account != null) {
+            //mStatusTextView.setText(getString(R.string.signed_in_fmt, account.getDisplayName()));
+            Toast.makeText(getActivity(), "No nulo", Toast.LENGTH_SHORT).show();
+            this.getView().findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+            this.getView().findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+        } else {
+            //mStatusTextView.setText(R.string.signed_out);
+            Toast.makeText(getActivity(), "Nulo", Toast.LENGTH_SHORT).show();
+            this.getView().findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+            this.getView().findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
+        }
+    }
 
     /**
      * Abre el alert dialog de editar objetivos
