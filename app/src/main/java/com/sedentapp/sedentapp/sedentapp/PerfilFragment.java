@@ -1,11 +1,13 @@
 package com.sedentapp.sedentapp.sedentapp;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -44,6 +46,7 @@ public class PerfilFragment extends Fragment {
     private GoogleSignInClient mGoogleSignInClient;
     private LoginButton loginButton;
     private CallbackManager callbackManager;
+    boolean init_calibration_flag = true;
 
     public PerfilFragment() {
         // Required empty public constructor
@@ -97,24 +100,50 @@ public class PerfilFragment extends Fragment {
         return view;
     }
 
+    public void StoreCalibrationInitLocation(Location location){
+        SharedPreferences sharedInitialLocation = getActivity().getPreferences(Context.MODE_WORLD_READABLE);
+        SharedPreferences.Editor editor = sharedInitialLocation.edit();
+        editor.putFloat("initialLatitude", (float)location.getLatitude());
+        editor.putFloat("initialLongitude", (float)location.getLongitude());
+        editor.commit();
+
+        init_calibration_flag = false;
+    }
+
+    public void StoreCalibrationDistance(Location location){
+        SharedPreferences initialLocation = getActivity().getPreferences(Context.MODE_WORLD_READABLE);
+        float initialLatitude = initialLocation.getFloat("initialLatitude", 0);
+        float initialLongitude = initialLocation.getFloat("initialLongitude", 0);
+
+        // Debug println, only to see if it works
+        Log.w(TAG, "InitialLatitude:" + initialLatitude);
+
+        SharedPreferences calibrationDistance = getActivity().getPreferences(Context.MODE_WORLD_READABLE);
+        SharedPreferences.Editor editor = calibrationDistance.edit();
+        editor.putFloat("laditudeDistance", initialLatitude - (float)location.getLatitude());
+        editor.putFloat("longitudeDistance", initialLongitude - (float) location.getLongitude());
+        editor.commit();
+
+        // Debug println, only to see if it works
+        Log.d(TAG, "FinalLatitude:" + location.getLatitude());
+        float difference =  initialLatitude - (float)location.getLatitude();
+        Log.d(TAG, "Difference:" + difference);
+
+
+    }
+
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
-
             Bundle b = intent.getBundleExtra("location");
             Location lastKnownLoc = (Location) b.getParcelable("location");
             if (lastKnownLoc != null) {
-                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-                alertDialog.setTitle("Ubicación");
-                alertDialog.setMessage("Latitud: " + lastKnownLoc.getLatitude() + "Longitud: " + lastKnownLoc.getLongitude());
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.show();
+                if ( init_calibration_flag ){
+                    StoreCalibrationInitLocation(lastKnownLoc);
+                }else{
+                    StoreCalibrationDistance(lastKnownLoc);
+                }
             }
         }
     };
@@ -137,11 +166,34 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-        Button calibrateStepButton = (Button) getView().findViewById(R.id.calibrate_step_button);
+        final Button calibrateStepButton = (Button) getView().findViewById(R.id.calibrate_step_button);
         // Capture button clicks
         calibrateStepButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                getActivity().startService(new Intent(getActivity(), ServiceCalibration.class));
+                if (init_calibration_flag) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                    alertDialog.setTitle("Calibración de pasos");
+                    alertDialog.setMessage("Se obtendrá tu ubicación. Pasea un poco y ...");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    calibrateStepButton.setText("Finalizar");
+                                    getActivity().startService(new Intent(getActivity(), ServiceCalibration.class));
+
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }else{
+                    getActivity().startService(new Intent(getActivity(), ServiceCalibration.class));
+                    calibrateStepButton.setText("Calibrar");
+                }
             }
         });
 
