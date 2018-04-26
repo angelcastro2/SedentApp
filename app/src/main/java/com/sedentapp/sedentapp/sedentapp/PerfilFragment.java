@@ -112,10 +112,7 @@ public class PerfilFragment extends Fragment {
         // Capture button clicks
         calibrateStepButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-
-                // Start NewActivity.class
-                Intent calibrationIntent = new Intent(getActivity(), CalibrationActivity.class);
-                startActivity(calibrationIntent);
+                getActivity().startService(new Intent(getActivity(), ServiceCalibration.class));
             }
         });
 
