@@ -11,8 +11,8 @@ import java.util.List;
 public class RegistroPasosService {
     private RegistroDatabase registroDatabase;
 
-    private RegistroDatabase getDatabase(Context context){
-        if (registroDatabase == null){
+    private RegistroDatabase getDatabase(Context context) {
+        if (registroDatabase == null) {
             registroDatabase = Room.databaseBuilder(context.getApplicationContext(),
                     RegistroDatabase.class, "RegistroDatabase.db")
                     .build();
@@ -40,16 +40,28 @@ public class RegistroPasosService {
         registroDatabase.registroPasosDao().delete(registroPasos);
     }
 
-    public long getPasosByDia(Context context, int dia, int mes, int ano){
-        long total = 0;
+    public List<RegistroPasos> getRegistroPasosByDia(Context context, int dia, int mes, int ano) {
         registroDatabase = getDatabase(context);
         List<RegistroPasos> listaPasos = registroDatabase.registroPasosDao().getRegistroPasosByDia(dia,mes,ano);
+        return listaPasos;
+    }
 
+    public long getPasosByDia(Context context, int dia, int mes, int ano){
+        long total = 0;
+        List<RegistroPasos> listaPasos = getRegistroPasosByDia(context, dia, mes, ano);
         for (RegistroPasos r: listaPasos){
             total += r.getPasos();
         }
         return total;
     }
+
+    public RegistroPasos getRegistroPasosByFechaAndHora(Context context, int dia, int mes, int ano, int hora) {
+        registroDatabase = getDatabase(context);
+        RegistroPasos registroPasos = registroDatabase.registroPasosDao().getPasosByFechaAndHora(dia, mes, ano, hora);
+        return registroPasos;
+    }
+
+
 
 
 }
