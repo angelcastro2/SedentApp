@@ -11,8 +11,10 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -23,6 +25,8 @@ import java.util.concurrent.Executor;
 public class ServiceCalibration extends Service {
 
     FusedLocationProviderClient mFusedLocationClient;
+    double longitude;
+    double latitude;
 
     public ServiceCalibration() {
     }
@@ -73,13 +77,20 @@ public class ServiceCalibration extends Service {
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                            double latitude = location.getLatitude();
-                            double longitude = location.getLongitude();
-                            System.out.println("Longitud: " + longitude + "\nLatitud: " + latitude);
+                            sendMessageToActivity(location);
                         }
                     }
                 });
 
+    }
+
+    private void sendMessageToActivity(Location location) {
+        Intent intent = new Intent("GPSLocation");
+        // You can also include some extra data.
+        Bundle b = new Bundle();
+        b.putParcelable("location", location);
+        intent.putExtra("location", b);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
 }

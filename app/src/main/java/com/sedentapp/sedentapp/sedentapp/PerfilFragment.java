@@ -1,10 +1,17 @@
 package com.sedentapp.sedentapp.sedentapp;
 
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,6 +97,28 @@ public class PerfilFragment extends Fragment {
         return view;
     }
 
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+
+            Bundle b = intent.getBundleExtra("location");
+            Location lastKnownLoc = (Location) b.getParcelable("location");
+            if (lastKnownLoc != null) {
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                alertDialog.setTitle("Ubicación");
+                alertDialog.setMessage("Latitud: " + lastKnownLoc.getLatitude() + "Longitud: " + lastKnownLoc.getLongitude());
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+        }
+    };
+
 
     @Override
     public void onStart() {
@@ -115,6 +144,9 @@ public class PerfilFragment extends Fragment {
                 getActivity().startService(new Intent(getActivity(), ServiceCalibration.class));
             }
         });
+
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(
+                mMessageReceiver, new IntentFilter("GPSLocation"));
 
         /*Button button2 = (Button) getView().findViewById(R.id.fb_login_button);
         button2.setOnClickListener(new View.OnClickListener() {
