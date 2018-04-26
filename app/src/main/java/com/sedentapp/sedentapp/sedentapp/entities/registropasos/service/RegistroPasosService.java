@@ -14,7 +14,7 @@ public class RegistroPasosService {
     private RegistroDatabase getDatabase(Context context) {
         if (registroDatabase == null) {
             registroDatabase = Room.databaseBuilder(context.getApplicationContext(),
-                    RegistroDatabase.class, "RegistroDatabase.db")
+                    RegistroDatabase.class, "RegistroDatabase.db").allowMainThreadQueries()
                     .build();
         }
         return registroDatabase;
