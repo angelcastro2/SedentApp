@@ -3,12 +3,14 @@ package com.sedentapp.sedentapp.sedentapp;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
@@ -26,7 +28,12 @@ import com.google.android.gms.fitness.request.DataSourcesRequest;
 import com.google.android.gms.fitness.request.OnDataPointListener;
 import com.google.android.gms.fitness.request.SensorRequest;
 import com.google.android.gms.fitness.result.DataSourcesResult;
+import com.sedentapp.sedentapp.sedentapp.entities.RegistroDatabase;
+import com.sedentapp.sedentapp.sedentapp.entities.registropasos.RegistroPasos;
+import com.sedentapp.sedentapp.sedentapp.entities.registropasos.service.RegistroPasosService;
 
+import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class StepCounterService extends Service {
@@ -34,6 +41,7 @@ public class StepCounterService extends Service {
     protected static final String TAG = "SedentApp";
     private GoogleApiClient mClient = null;
     private OnDataPointListener mListener;
+    private RegistroPasosService registroPasosService;
 
     /**
      * Class for clients to access.  Because we know this service always
@@ -52,6 +60,7 @@ public class StepCounterService extends Service {
         Log.d(TAG, "[StepCounterService] onCreate");
         connectFitness();
         mClient.connect();
+        this.registroPasosService = new RegistroPasosService();
     }
 
     @Override
@@ -150,6 +159,7 @@ public class StepCounterService extends Service {
                     Value val = dataPoint.getValue(field);
                     Log.e(TAG, "[StepCounterService] Detected DataPoint field: " + field.getName());
                     Log.e(TAG, "[StepCounterService] Detected DataPoint value: " + val);
+                    updateStepCounter(val.asInt());
                 }
             }
         };
@@ -171,6 +181,32 @@ public class StepCounterService extends Service {
                 }
             }
         });
+
+    }
+
+
+    private void updateStepCounter(int steps) {
+
+        Log.d(TAG, "[StepCounterService] updateStepCounter");
+
+        Calendar calendar = Calendar.getInstance();
+
+        RegistroPasos registroPasos = this.registroPasosService.getRegistroPasosByFechaAndHora(this,
+                calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.HOUR_OF_DAY));
+
+        if (registroPasos != null) {
+            registroPasos.setPasos(registroPasos.getPasos() + steps);
+            this.registroPasosService.update(registroPasos, this);
+        }
+        else {
+            registroPasos = new RegistroPasos(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), steps);
+            this.registroPasosService.save(registroPasos, this);
+        }
+
+        Log.d(TAG, "[StepCounterService] StepRegister at " + calendar.toString() + ": " + registroPasos.getPasos());
+
 
     }
 }
