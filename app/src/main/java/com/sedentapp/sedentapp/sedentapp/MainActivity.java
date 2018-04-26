@@ -56,16 +56,17 @@ public class MainActivity extends AppCompatActivity
 
     // To invoke the bound service, first make sure that this value
     // is not null.
-    private StepCounterService mBoundService;
+    private StepCounterService stepCounterService;
+    private ReadDatabaseService readDatabaseService;
 
-    private ServiceConnection mConnection = new ServiceConnection() {
+    private ServiceConnection stepCounterServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             // This is called when the connection with the service has been
             // established, giving us the service object we can use to
             // interact with the service.  Because we have bound to a explicit
             // service that we know is running in our own process, we can
             // cast its IBinder to a concrete class and directly access it.
-            mBoundService = ((StepCounterService.LocalBinder)service).getService();
+            stepCounterService = ((StepCounterService.LocalBinder)service).getService();
 
             // Tell the user about this for our demo.
             Toast.makeText(MainActivity.this, "Step counter service connected",
@@ -77,8 +78,33 @@ public class MainActivity extends AppCompatActivity
             // unexpectedly disconnected -- that is, its process crashed.
             // Because it is running in our same process, we should never
             // see this happen.
-            mBoundService = null;
+            stepCounterService = null;
             Toast.makeText(MainActivity.this, "Step counter service disconnected",
+                    Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private ServiceConnection readDatabaseServiceConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            // This is called when the connection with the service has been
+            // established, giving us the service object we can use to
+            // interact with the service.  Because we have bound to a explicit
+            // service that we know is running in our own process, we can
+            // cast its IBinder to a concrete class and directly access it.
+            readDatabaseService = ((ReadDatabaseService.LocalBinder)service).getService();
+
+            // Tell the user about this for our demo.
+            Toast.makeText(MainActivity.this, "Read data base service connected",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            // This is called when the connection with the service has been
+            // unexpectedly disconnected -- that is, its process crashed.
+            // Because it is running in our same process, we should never
+            // see this happen.
+            stepCounterService = null;
+            Toast.makeText(MainActivity.this, "Read data base service service disconnected",
                     Toast.LENGTH_SHORT).show();
         }
     };
@@ -121,7 +147,8 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "[MainActivity] onResume");
-        doBindService();
+        doBindStepCounterService();
+        doBindReadDatabaseService();
     }
 
     @Override
@@ -161,7 +188,8 @@ public class MainActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "[MainActivity] onDestroy");
-        doUnbindService();
+        doUnbindStepCounterService();
+        doUnbindReadDatabaseService();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -217,27 +245,52 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    void doBindService() {
-        Log.d(TAG, "[MainActivity] doBindService");
+    void doBindStepCounterService() {
+        Log.d(TAG, "[MainActivity] doBindStepCounterService");
         // Attempts to establish a connection with the service.  We use an
         // explicit class name because we want a specific service
         // implementation that we know will be running in our own process
         // (and thus won't be supporting component replacement by other
         // applications).
         if (bindService(new Intent(MainActivity.this, StepCounterService.class),
-                mConnection, Context.BIND_AUTO_CREATE)) {
+                stepCounterServiceConnection, Context.BIND_AUTO_CREATE)) {
             mShouldUnbind = true;
         } else {
-            Log.e(TAG, "Error: The requested service doesn't " +
+            Log.e(TAG, "Error: StepCounterService doesn't " +
                     "exist, or this client isn't allowed access to it.");
         }
     }
 
-    void doUnbindService() {
-        Log.d(TAG, "[MainActivity] doUnbindService");
+    void doUnbindStepCounterService() {
+        Log.d(TAG, "[MainActivity] doUnbindStepCounterService");
         if (mShouldUnbind) {
             // Release information about the service's state.
-            unbindService(mConnection);
+            unbindService(stepCounterServiceConnection);
+            mShouldUnbind = false;
+        }
+    }
+
+    void doBindReadDatabaseService() {
+        Log.d(TAG, "[MainActivity] doBindReadDatabaseService");
+        // Attempts to establish a connection with the service.  We use an
+        // explicit class name because we want a specific service
+        // implementation that we know will be running in our own process
+        // (and thus won't be supporting component replacement by other
+        // applications).
+        if (bindService(new Intent(MainActivity.this, ReadDatabaseService.class),
+                readDatabaseServiceConnection, Context.BIND_AUTO_CREATE)) {
+            mShouldUnbind = true;
+        } else {
+            Log.e(TAG, "Error: ReadDatabaseService doesn't " +
+                    "exist, or this client isn't allowed access to it.");
+        }
+    }
+
+    void doUnbindReadDatabaseService() {
+        Log.d(TAG, "[MainActivity] doUnbindReadDatabaseService");
+        if (mShouldUnbind) {
+            // Release information about the service's state.
+            unbindService(readDatabaseServiceConnection);
             mShouldUnbind = false;
         }
     }

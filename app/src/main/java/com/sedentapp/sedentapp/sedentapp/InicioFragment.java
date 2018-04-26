@@ -1,14 +1,19 @@
 package com.sedentapp.sedentapp.sedentapp;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +21,13 @@ import com.db.chart.model.BarSet;
 import com.db.chart.model.LineSet;
 import com.db.chart.util.Tools;
 import com.db.chart.view.BarChartView;
+import com.sedentapp.sedentapp.sedentapp.entities.registropasos.RegistroPasos;
+import com.sedentapp.sedentapp.sedentapp.entities.registropasos.service.RegistroPasosService;
+
+import org.w3c.dom.Text;
+
+import java.util.Calendar;
+import java.util.List;
 
 
 /**
@@ -32,13 +44,17 @@ public class InicioFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private final UpdateDailyStepCounterBroadcastReceiver receiver = new UpdateDailyStepCounterBroadcastReceiver();
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
+    private TextView tv_inicio_pasos_valor;
+
     private OnFragmentInteractionListener mListener;
 
-    private final String TAG = "Sedentapp";
+    private final String TAG = "SedentApp";
 
     public InicioFragment() {
         // Required empty public constructor
@@ -65,6 +81,7 @@ public class InicioFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "[InicioFragment] onCreate");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -75,6 +92,7 @@ public class InicioFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "[InicioFragment] onStart");
 
         BarChartView chart = (BarChartView) this.getActivity().findViewById(R.id.chart);
         //llamamos a reset para evitar un crash de la app al volver del onPause
@@ -93,6 +111,32 @@ public class InicioFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "[InicioFragment] onResume");
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.sedentapp.update_daily_step_counter");
+        getContext().registerReceiver(receiver, intentFilter);
+
+        Intent intent = new Intent();
+        intent.setAction("com.sedentapp.com.sedentapp.read_daily_step_counter");
+        getContext().sendBroadcast(intent);
+
+    }
+
+    private class UpdateDailyStepCounterBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle extras = intent.getExtras();
+            int dailyStepCounter = extras.getInt("dailyStepCounter");
+            Toast.makeText(getContext(), "Daily step counter: " + dailyStepCounter, Toast.LENGTH_SHORT);
+            updateDailyStepCounter(dailyStepCounter);// update your textView in the main layout
+        }
+    }
+
+    private void updateDailyStepCounter(int dailyStepCounter) {
+        Log.d(TAG, "[InicioFragment] updateDailyStepCounter");
+        TextView tv_inicio_pasos_valor = (TextView) getView().findViewById(R.id.tv_inicio_pasos_valor);
+        tv_inicio_pasos_valor.setText("" + dailyStepCounter);
     }
 
     @Override
