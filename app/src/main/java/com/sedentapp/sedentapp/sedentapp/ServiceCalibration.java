@@ -38,9 +38,7 @@ public class ServiceCalibration extends Service {
     }
 
     public void onStart(Intent intent, int startId) {
-
         getLocation();
-
         this.stopSelf();
     }
 

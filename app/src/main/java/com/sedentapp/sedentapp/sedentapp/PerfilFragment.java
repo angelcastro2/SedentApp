@@ -101,7 +101,7 @@ public class PerfilFragment extends Fragment {
     }
 
     public void StoreCalibrationInitLocation(Location location){
-        SharedPreferences sharedInitialLocation = getActivity().getPreferences(Context.MODE_WORLD_READABLE);
+        SharedPreferences sharedInitialLocation = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedInitialLocation.edit();
         editor.putFloat("initialLatitude", (float)location.getLatitude());
         editor.putFloat("initialLongitude", (float)location.getLongitude());
@@ -111,24 +111,30 @@ public class PerfilFragment extends Fragment {
     }
 
     public void StoreCalibrationDistance(Location location){
-        SharedPreferences initialLocation = getActivity().getPreferences(Context.MODE_WORLD_READABLE);
+        SharedPreferences initialLocation = getActivity().getPreferences(Context.MODE_PRIVATE);
         float initialLatitude = initialLocation.getFloat("initialLatitude", 0);
         float initialLongitude = initialLocation.getFloat("initialLongitude", 0);
 
-        // Debug println, only to see if it works
-        Log.w(TAG, "InitialLatitude:" + initialLatitude);
-
-        SharedPreferences calibrationDistance = getActivity().getPreferences(Context.MODE_WORLD_READABLE);
+        SharedPreferences calibrationDistance = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = calibrationDistance.edit();
         editor.putFloat("laditudeDistance", initialLatitude - (float)location.getLatitude());
         editor.putFloat("longitudeDistance", initialLongitude - (float) location.getLongitude());
         editor.commit();
 
-        // Debug println, only to see if it works
-        Log.d(TAG, "FinalLatitude:" + location.getLatitude());
-        float difference =  initialLatitude - (float)location.getLatitude();
-        Log.d(TAG, "Difference:" + difference);
+        // reset the calibration flag to repeat calibration
+        init_calibration_flag = true;
 
+        // Show final distance, must be be modified
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+        alertDialog.setTitle("Calibración de pasos");
+        alertDialog.setMessage("La distancia recorrida es: \n" + calibrationDistance.getFloat("latitudeDistance", 0));
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
 
     }
 
@@ -191,8 +197,9 @@ public class PerfilFragment extends Fragment {
                             });
                     alertDialog.show();
                 }else{
-                    getActivity().startService(new Intent(getActivity(), ServiceCalibration.class));
                     calibrateStepButton.setText("Calibrar");
+                    getActivity().startService(new Intent(getActivity(), ServiceCalibration.class));
+
                 }
             }
         });
