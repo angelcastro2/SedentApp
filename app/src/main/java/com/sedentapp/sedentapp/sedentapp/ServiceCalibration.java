@@ -37,9 +37,11 @@ public class ServiceCalibration extends Service {
         return null;
     }
 
-    public void onStart(Intent intent, int startId) {
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
         getLocation();
         this.stopSelf();
+        return START_NOT_STICKY;
     }
 
     public void showAlert(String message) {
