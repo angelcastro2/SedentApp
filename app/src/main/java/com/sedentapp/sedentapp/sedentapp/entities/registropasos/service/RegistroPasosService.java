@@ -61,6 +61,12 @@ public class RegistroPasosService {
         return registroPasos;
     }
 
+    public List<RegistroPasos> getRegistroPasosByMes(Context context, int mes, int ano) {
+        registroDatabase = getDatabase(context);
+        List<RegistroPasos> listaPasos = registroDatabase.registroPasosDao().getRegistroPasosByMes(mes,ano);
+        return listaPasos;
+    }
+
 
 
 

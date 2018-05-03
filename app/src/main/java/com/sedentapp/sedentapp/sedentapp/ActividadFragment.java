@@ -20,6 +20,12 @@ import android.widget.Toast;
 
 import com.db.chart.model.BarSet;
 import com.db.chart.view.BarChartView;
+import com.sedentapp.sedentapp.sedentapp.entities.registropasos.RegistroPasos;
+import com.sedentapp.sedentapp.sedentapp.entities.registropasos.service.RegistroPasosService;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 
 /**
@@ -39,25 +45,21 @@ public class ActividadFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private RegistroPasosService registroPasosService;
+
 //    private OnFragmentInteractionListener mListener;
 
-    private String s1 = "";
+    String[] dateArray = {};
+    String[] stepsArray = {};
 
+    List<String> dateList = new ArrayList<String>();
+    List<String> stepList = new ArrayList<String>();
 
-    String[] dateArray = {"01/04/2018","02/04/2018","03/04/2018","04/04/2018","05/04/2018",
-            "06/04/2018","07/04/2018","08/04/2018","09/04/2018","10/04/2018","11/04/2018",
-            "12/04/2018","13/04/2018","14/04/2018","15/04/2018","16/04/2018","17/04/2018",
-            "18/04/2018","19/04/2018","20/04/2018","21/04/2018","22/04/2018","23/04/2018",
-            "24/04/2018","25/04/2018","26/04/2018","27/04/2018","28/04/2018","29/04/2018","30/04/2018"};
-
-    String[] stepsArray = {
-            "10500", "8000", "6900", "8000", "6500", "10500", "8000", "6900", "8000", "6500",
-            "10500", "8000", "6900", "8000", "6500", "10500", "8000", "6900", "8000", "6500",
-            "10500", "8000", "6900", "8000", "6500", "10500", "8000", "6900", "8000", "6500"
-    };
-
+    CustomListActividadAdapter listActividad;
 
     ListView listView;
+
+    Calendar fecha;
 
 
     public ActividadFragment() {
@@ -95,7 +97,42 @@ public class ActividadFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_actividad, container, false);
 
-        CustomListActividadAdapter listActividad = new CustomListActividadAdapter(this.getActivity(), dateArray, stepsArray);
+
+        this.registroPasosService = new RegistroPasosService();
+//        this.registroPasosService.save(new RegistroPasos(3,4,2018,1,100),this.getContext());
+//        this.registroPasosService.save(new RegistroPasos(3,4,2018,2,600),this.getContext());
+//        this.registroPasosService.save(new RegistroPasos(3,4,2018,3,100),this.getContext());
+//        this.registroPasosService.save(new RegistroPasos(3,4,2018,4,300),this.getContext());
+//        this.registroPasosService.save(new RegistroPasos(3,4,2018,5,220),this.getContext());
+//        this.registroPasosService.save(new RegistroPasos(3,4,2018,6,160),this.getContext());
+//        this.registroPasosService.save(new RegistroPasos(3,4,2018,7,300),this.getContext());
+//        this.registroPasosService.save(new RegistroPasos(3,4,2018,8,200),this.getContext());
+//
+//
+//        this.registroPasosService.save(new RegistroPasos(2,4,2018,1,200),this.getContext());
+//        this.registroPasosService.save(new RegistroPasos(2,4,2018,2,100),this.getContext());
+//        this.registroPasosService.save(new RegistroPasos(2,4,2018,3,100),this.getContext());
+//        this.registroPasosService.save(new RegistroPasos(2,4,2018,4,500),this.getContext());
+//        this.registroPasosService.save(new RegistroPasos(2,4,2018,5,720),this.getContext());
+//        this.registroPasosService.save(new RegistroPasos(2,4,2018,6,360),this.getContext());
+//        this.registroPasosService.save(new RegistroPasos(2,4,2018,7,500),this.getContext());
+//        this.registroPasosService.save(new RegistroPasos(2,4,2018,8,300),this.getContext());
+
+        Calendar calendar = Calendar.getInstance();
+        List<RegistroPasos> registroPasos = this.registroPasosService.getRegistroPasosByDia(this.getContext(),
+                calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
+
+        fecha = calendar;
+
+        for (RegistroPasos registroPaso : registroPasos){
+            dateList.add(registroPaso.getDia()+"/"+registroPaso.getMes()+"/"+registroPaso.getAno()+ " " + registroPaso.getHora()+":00");
+            stepList.add(String.valueOf(registroPaso.getPasos()));
+        }
+
+        dateArray = dateList.toArray(new String[dateList.size()]);
+        stepsArray = stepList.toArray(new String[stepList.size()]);
+
+        listActividad = new CustomListActividadAdapter(this.getActivity(), dateArray, stepsArray);
         listView = (ListView)view.findViewById(R.id.listview);
         listView.setAdapter(listActividad);
 
@@ -135,7 +172,20 @@ public class ActividadFragment extends Fragment {
         leftButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Button Left Clicked", Toast.LENGTH_LONG).show();
+                Spinner spinnerActividad = (Spinner) getView().findViewById(R.id.spinner_actividad);
+                String s = spinnerActividad.getSelectedItem().toString();
+                boolean moreResults;
+                if (s.equalsIgnoreCase("Diario")){
+                    moreResults = settearListView("Diario", -1, false);
+                } else if (s.equalsIgnoreCase("Mensual")) {
+                    moreResults=true;
+                } else {
+                    moreResults=true;
+                }
+
+                if (!moreResults){
+                    Toast.makeText(getActivity(), "No hay más resultados anteriores.", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -143,19 +193,34 @@ public class ActividadFragment extends Fragment {
         rightButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Button Right Clicked", Toast.LENGTH_LONG).show();
+                Spinner spinnerActividad = (Spinner) getView().findViewById(R.id.spinner_actividad);
+                String s = spinnerActividad.getSelectedItem().toString();
+                boolean moreResults;
+                if (s.equalsIgnoreCase("Diario")){
+                    moreResults = settearListView("Diario", 1, false);
+                } else if (s.equalsIgnoreCase("Mensual")) {
+                    moreResults=true;
+                } else {
+                    moreResults=true;
+                }
+
+                if (!moreResults){
+                    Toast.makeText(getActivity(), "No hay más resultados posteriores.", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
         Spinner spinnerActividad = (Spinner) getView().findViewById(R.id.spinner_actividad);
-        s1 = spinnerActividad.getSelectedItem().toString();
         spinnerActividad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Spinner spinnerActividad = (Spinner) getView().findViewById(R.id.spinner_actividad);
                 String s = spinnerActividad.getSelectedItem().toString();
-                if(s!=s1){
-                    Toast.makeText(getActivity(), "Spinner on change", Toast.LENGTH_LONG).show();
-                    s1 = s;
+                if (s.equalsIgnoreCase("Diario")){
+                    settearListView("Diario",0,true);
+                } else if (s.equalsIgnoreCase("Mensual")) {
+                    settearListView("Mensual",0,true);
+                } else {
+                    settearListView("Anual",0,true);
                 }
             }
 
@@ -164,11 +229,75 @@ public class ActividadFragment extends Fragment {
             }
         });
 
+        settearListView("Diario", 0,true);
+
+    }
+
+    private boolean settearListView(String rango, Integer cambioDeFecha, Boolean primeraVez){
+        View view = getView();
+
+        Calendar calendar = Calendar.getInstance();
+
+        listActividad.notifyDataSetChanged();
+        if (rango.equalsIgnoreCase("Diario")) {
+            if (primeraVez) {
+                fecha = calendar;
+            } else {
+                fecha.add(Calendar.DAY_OF_MONTH, cambioDeFecha);
+            }
+            List<RegistroPasos> registroPasos = this.registroPasosService.getRegistroPasosByDia(this.getContext(),
+                    fecha.get(Calendar.DAY_OF_MONTH), fecha.get(Calendar.MONTH), fecha.get(Calendar.YEAR));
+
+            if (registroPasos.isEmpty()){
+                if(!primeraVez) {
+                    fecha.add(Calendar.DAY_OF_MONTH, -cambioDeFecha);
+                }
+                return false;
+            }
+
+            dateList.clear();
+            stepList.clear();
+
+            for (RegistroPasos registroPaso : registroPasos){
+                dateList.add(registroPaso.getDia()+"/"+registroPaso.getMes()+"/"+registroPaso.getAno()+ " " + registroPaso.getHora()+":00");
+                stepList.add(String.valueOf(registroPaso.getPasos()));
+            }
+            TextView textView = (TextView) view.findViewById(R.id.texto_fecha_grafica);
+            textView.setText(fecha.get(Calendar.DAY_OF_MONTH)+"/"+fecha.get(Calendar.MONTH)+"/"+fecha.get(Calendar.YEAR));
+            dateArray = dateList.toArray(new String[dateList.size()]);
+            stepsArray = stepList.toArray(new String[stepList.size()]);
+
+
+            listActividad = new CustomListActividadAdapter(this.getActivity(), dateArray, stepsArray);
+            listView = (ListView)view.findViewById(R.id.listview);
+            listView.setAdapter(listActividad);
+
+
+            String[] labels = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"};//horizontal axis
+            float[] values = new float[24]; //values
+            for (int i = 0; i<24; i++) {
+                if (i < registroPasos.size()) {
+                    values[i] = registroPasos.get(i).getPasos();
+                } else {
+                    values[i] = 0;
+                }
+            }
+            createChart(labels, values);
+
+        } else if (rango.equalsIgnoreCase("Mensual")) {
+//            long a = registroPasosService.getPasosByDia(this.getContext(),
+//                    fecha.get(Calendar.DAY_OF_MONTH), fecha.get(Calendar.MONTH), fecha.get(Calendar.YEAR));
+        } else {
+
+        }
+
+        return true;
+    }
+
+    private void createChart(String[] labels, float[] values) {
         BarChartView chart = (BarChartView) this.getActivity().findViewById(R.id.chart);
         //llamamos a reset para evitar un crash de la app al volver del onPause
         chart.reset();
-        String[] labels = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"};//horizontal axis
-        float[] values = {10f,20f,30f,40f,20f,100f,50f,30f,25f,5f,60f,10f,10f,20f,30f,40f,20f,100f,50f,30f,25f,5f,60f,10f}; //values
         BarSet dataset = new BarSet(labels, values);
         dataset.setColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
         chart.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.white, null));
@@ -176,7 +305,6 @@ public class ActividadFragment extends Fragment {
         chart.setLabelsColor(ResourcesCompat.getColor(getResources(), R.color.black, null));
         chart.setAxisColor(ResourcesCompat.getColor(getResources(), R.color.black, null));
         chart.show();
-
     }
 
     /**
