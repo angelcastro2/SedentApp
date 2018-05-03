@@ -200,4 +200,25 @@
     <string name="calibration_step_text">Calibrar</string>
 
 
+    <!-- EULA -->
+    <string name="eula_titulo">EULA</string>
+    <string name="eula_texto">LICENCIA DE USUARIO FINAL PARA EL SOFTWARE ANDROID SEDENTAPP LEA ATENTAMENTE ESTE DOCUMENTO ANTES DE UTILIZAR ESTE SOFTWARE. ESTA LICENCIA OFRECE INFORMACIÓN IMPORTANTE SOBRE EL SOFTWARE, LE PROPORCIONA UNA LICENCIA PARA UTILIZAR EL SOFTWARE Y CONTIENE INFORMACIÓN SOBRE LA GARANTÍA Y LA RESPONSABILIDAD. AL USAR EL SOFTWARE, ACEPTA EL SOFTWARE "TAL CUAL" Y ACEPTA LOS TÉRMINOS DE ESTE ACUERDO DE LICENCIA. EN NINGUNA GARANTÍA, LOS AUTORES SE HARÁN RESPONSABLES POR CUALQUIER DAÑO DERIVADO DEL USO DE ESTE SOFTWARE. SI NO DESEA HACERLO, NO USE EL SOFTWARE. \n
+
+1- Términos de la licencia \n
+Esta licencia le permite: (a) usar el software en un solo dispositivo; y Si desea utilizar el Software en más de un dispositivo, debe obtener una licencia de otra copia del Software.
+\n
+2 - Restricciones de uso \n
+A menos que SedentApp lo haya autorizado a distribuir el Software, no deberá realizar ni distribuir copias del Software ni transferir el Software de un dispositivo a otro. No deberá descompilar, aplicar ingeniería inversa, desmontar, incluir en otro software ni traducir el Software, ni utilizar el Software para fines comerciales. No debe modificar, alterar, cambiar o hacer modificaciones al Software ni crear trabajos derivados basados ​​en el Software. No deberá alquilar, arrendar, revender, sublicenciar, asignar, distribuir o transferir de ninguna otra forma el Software o esta licencia. Cualquier intento de hacerlo será nulo y sin efecto.
+\n
+3 - Propiedad \n
+Esta licencia le otorga derechos limitados para usar el Software. El Propietario conserva toda la propiedad, derecho, título e interés en, hacia y del Software y todas las copias del mismo. Todos los derechos no específicamente otorgados en esta licencia, incluidos los derechos de autor nacionales e internacionales, están reservados por el Propietario.
+\n
+4 - Marcas de propiedad \n
+Los logotipos, nombres de productos, manuales, documentación y otros materiales de soporte del propietario están patentados, con derechos de autor, marcas comerciales, constituyen secretos comerciales valiosos (independientemente de si una parte de ellos puede estar protegida por derechos de autor o patentados) o son propiedad exclusiva del propietario. No eliminará ni ocultará los derechos de autor, la marca comercial u otros avisos de propiedad del Propietario de ninguno de los materiales contenidos en este paquete ni se descargarán junto con el Software.
+\n
+5 - Descargo de garantías y soporte técnico \n
+El Software se le proporciona "TAL CUAL", sin ningún tipo de soporte técnico o garantía de ningún tipo, que incluye, sin limitación, cualquier garantía o condición de comerciabilidad, idoneidad para un propósito particular y no infracción.
+\n
+ALGUNAS JURISDICCIONES NO PERMITEN LA EXCLUSIÓN DE GARANTÍAS IMPLÍCITAS, POR LO QUE LA EXCLUSIÓN ANTERIOR PODRÍA NO APLICARSE A USTED. TAMBIÉN PUEDE TENER OTROS DERECHOS LEGALES QUE VARÍAN DE JURISDICCIÓN A JURISDICCIÓN.</string>
+
 </resources>
