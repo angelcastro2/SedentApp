@@ -33,6 +33,13 @@
     <string name="objetivos_dialog_activo">Activo</string>
     <string name="objetivo_generico_dialog">Objetivo</string>
 
+    <!-- preferencias objetivos -->
+    <string name="pref_objetivos">pref_objetivos</string>
+    <string name="pref_objetivos_pasos">pasos</string>
+    <string name="pref_objetivos_distancia">distancia</string>
+    <string name="pref_objetivos_peso">peso</string>
+    <string name="pref_objetivos_actividad">actividad</string>
+
 
     <!-- Generico -->
     <string name="guardar">Guardar</string>

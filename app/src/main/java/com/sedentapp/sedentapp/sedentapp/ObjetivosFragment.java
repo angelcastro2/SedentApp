@@ -2,6 +2,7 @@ package com.sedentapp.sedentapp.sedentapp;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -105,6 +106,28 @@ public class ObjetivosFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        //Inicializamos las preferencias
+        Context context = getActivity();
+        SharedPreferences objetivosPref = context.getSharedPreferences(
+                getString(R.string.pref_objetivos), Context.MODE_PRIVATE);
+
+        //recuperamos los valores de los objetivos
+        Integer objetivo_pasos = objetivosPref.getInt(getString(R.string.pref_objetivos_pasos), 0);
+        Integer objetivo_distancia = objetivosPref.getInt(getString(R.string.pref_objetivos_distancia), 0);
+        Integer objetivo_peso = objetivosPref.getInt(getString(R.string.pref_objetivos_peso), 0);
+        Integer objetivo_actividad = objetivosPref.getInt(getString(R.string.pref_objetivos_actividad), 0);
+
+        //actualizamos la vista con los valores recuperados
+        TextView tv_pasos = (TextView) getView().findViewById(R.id.objetivo_pasos_valor);
+        tv_pasos.setText(objetivo_pasos.toString());
+        TextView tv_distancia = (TextView) getView().findViewById(R.id.objetivo_distancia_valor);
+        tv_distancia.setText(objetivo_distancia.toString());
+        TextView tv_peso = (TextView) getView().findViewById(R.id.objetivo_peso_valor);
+        tv_peso.setText(objetivo_peso.toString());
+        TextView tv_actividad = (TextView) getView().findViewById(R.id.objetivo_actividad_valor);
+        tv_actividad.setText(objetivo_actividad.toString());
+
+
         ImageButton button = (ImageButton) getView().findViewById(R.id.boton_edit_pasos);
         button.setOnClickListener(new View.OnClickListener() {
 
@@ -145,6 +168,8 @@ public class ObjetivosFragment extends Fragment {
                 personalizarObjetivoDialog(tiempoActividad);
             }
         });
+
+
 
 
     }
@@ -201,11 +226,15 @@ public class ObjetivosFragment extends Fragment {
      * Abre el alert dialog de editar objetivos
      * @param objetivo nombre del objetivo a editar para mostrar en un textview
      */
-    public void personalizarObjetivoDialog(String objetivo) {
+    public void personalizarObjetivoDialog(final String objetivo) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this.getActivity());
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.dialog_objetivos, null);
         dialogBuilder.setView(dialogView);
+        //cargamos las sharedpreferences
+        Context context = getActivity();
+        final SharedPreferences objetivosPref = context.getSharedPreferences(
+                getString(R.string.pref_objetivos), Context.MODE_PRIVATE);
 
         final EditText edt = (EditText) dialogView.findViewById(R.id.editText_edit_objetivo);
         //recuperamos el textview y ponemos el texto segun el tipo de objetivo
@@ -218,7 +247,30 @@ public class ObjetivosFragment extends Fragment {
         dialogBuilder.setTitle(titulo);
         dialogBuilder.setPositiveButton(guardar, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //hacer algo con edt.getText().toString();
+                SharedPreferences.Editor editor = objetivosPref.edit();
+                if (objetivo == getResources().getString(R.string.pasos_titulo)){
+
+                    editor.putInt(getString(R.string.pref_objetivos_pasos), Integer.parseInt(edt.getText().toString()));
+                    TextView tv_pasos = (TextView) getView().findViewById(R.id.objetivo_pasos_valor);
+                    tv_pasos.setText(edt.getText().toString());
+                }else if(objetivo == getResources().getString(R.string.distancia)){
+
+                    editor.putInt(getString(R.string.pref_objetivos_distancia), Integer.parseInt(edt.getText().toString()));
+                    TextView tv_distancia = (TextView) getView().findViewById(R.id.objetivo_distancia_valor);
+                    tv_distancia.setText(edt.getText().toString());
+                }else if(objetivo == getResources().getString(R.string.peso)){
+
+                    editor.putInt(getString(R.string.pref_objetivos_peso), Integer.parseInt(edt.getText().toString()));
+                    TextView tv_peso = (TextView) getView().findViewById(R.id.objetivo_peso_valor);
+                    tv_peso.setText(edt.getText().toString());
+                }else {
+
+                    editor.putInt(getString(R.string.pref_objetivos_actividad), Integer.parseInt(edt.getText().toString()));
+                    TextView tv_actividad = (TextView) getView().findViewById(R.id.objetivo_actividad_valor);
+                    tv_actividad.setText(edt.getText().toString());
+                }
+                editor.commit();
+        
             }
         });
         dialogBuilder.setNegativeButton(cancelar, new DialogInterface.OnClickListener() {
