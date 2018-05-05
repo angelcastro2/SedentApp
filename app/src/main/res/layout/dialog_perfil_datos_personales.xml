@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/activity_horizontal_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/tv_dialog_perfil_nf_edad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/edad_perfil"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edt_dialog_perfil_nf_edad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/tv_dialog_perfil_nf_estatura"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/estatura_perfil"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edt_dialog_perfil_nf_estatura"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/tv_dialog_perfil_nf_peso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/peso_perfil"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edt_dialog_perfil_nf_peso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/tv_dialog_perfil_nf_zancada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/zancada_perfil"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edt_dialog_perfil_nf_zancada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number" />
+
+    </LinearLayout>
+
+</LinearLayout>

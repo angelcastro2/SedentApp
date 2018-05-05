@@ -1,10 +1,12 @@
 package com.sedentapp.sedentapp.sedentapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,7 +110,7 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-        Button calibrateStepButton = (Button) getView().findViewById(R.id.calibrate_step_button);
+        ImageButton calibrateStepButton = (ImageButton) getView().findViewById(R.id.calibrate_step_button);
         // Capture button clicks
         calibrateStepButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -132,7 +134,7 @@ public class PerfilFragment extends Fragment {
         boton_edit.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Editar nombre", Toast.LENGTH_SHORT).show();
+                personalizarDialogPerfilNombreFoto();
 
             }
         });
@@ -141,7 +143,7 @@ public class PerfilFragment extends Fragment {
         boton_edit2.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Editar datos", Toast.LENGTH_SHORT).show();
+                personalizarDialogDatosPersonales();
 
             }
         });
@@ -208,22 +210,19 @@ public class PerfilFragment extends Fragment {
         }
     }
 
-    /**
-     * Abre el alert dialog de editar objetivos
-     * @param objetivo nombre del objetivo a editar para mostrar en un textview
-     */
-    /*public void personalizarObjetivoDialog(String objetivo) {
+
+    public void personalizarDialogPerfilNombreFoto() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this.getActivity());
         LayoutInflater inflater = this.getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.dialog_objetivos, null);
+        final View dialogView = inflater.inflate(R.layout.dialog_perfil_nombre_foto, null);
         dialogBuilder.setView(dialogView);
 
-        final EditText edt = (EditText) dialogView.findViewById(R.id.editText_edit_objetivo);
-        //recuperamos el textview y ponemos el texto segun el tipo de objetivo
-        TextView tv_tipo_objetivo = dialogView.findViewById(R.id.textview_tipo_objetivo_alertdialog);
-        tv_tipo_objetivo.setText(objetivo);
+//        final EditText edt = (EditText) dialogView.findViewById(R.id.editText_edit_objetivo);
+//        //recuperamos el textview y ponemos el texto segun el tipo de objetivo
+//        TextView tv_tipo_objetivo = dialogView.findViewById(R.id.textview_tipo_objetivo_alertdialog);
+//        tv_tipo_objetivo.setText(objetivo);
 
-        String titulo = getResources().getString(R.string.objetivos_dialog_titulo);
+        String titulo = getResources().getString(R.string.perfil_dialog_nombre);
         String guardar = getResources().getString(R.string.guardar);
         String cancelar = getResources().getString(R.string.cancelar);
         dialogBuilder.setTitle(titulo);
@@ -240,6 +239,40 @@ public class PerfilFragment extends Fragment {
         });
         AlertDialog b = dialogBuilder.create();
         b.show();
-    }*/
+    }
+
+
+    public void personalizarDialogDatosPersonales() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this.getActivity());
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_perfil_datos_personales, null);
+        dialogBuilder.setView(dialogView);
+
+//        final EditText edt = (EditText) dialogView.findViewById(R.id.editText_edit_objetivo);
+//        //recuperamos el textview y ponemos el texto segun el tipo de objetivo
+//        TextView tv_tipo_objetivo = dialogView.findViewById(R.id.textview_tipo_objetivo_alertdialog);
+//        tv_tipo_objetivo.setText(objetivo);
+
+        String titulo = getResources().getString(R.string.datos_personales_perfil);
+        String guardar = getResources().getString(R.string.guardar);
+        String cancelar = getResources().getString(R.string.cancelar);
+        dialogBuilder.setTitle(titulo);
+        dialogBuilder.setPositiveButton(guardar, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //hacer algo con edt.getText().toString();
+            }
+        });
+        dialogBuilder.setNegativeButton(cancelar, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //pass
+                dialog.dismiss();
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
+    }
+
+
+
 
 }

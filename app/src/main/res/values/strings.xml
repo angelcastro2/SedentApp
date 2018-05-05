@@ -74,6 +74,8 @@
     <string name="facebook_app_id">595917787453039</string>
     <string name="fb_login_protocol_scheme">fb595917787453039</string>
 
+    <!-- Perfil dialog -->
+    <string name="perfil_dialog_nombre">Nombre</string>
 
     <!-- Inicio fragment -->
     <string name="tiempoInactividad">Tiempo de Inactividad</string>
