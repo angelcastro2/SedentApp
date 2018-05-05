@@ -77,6 +77,10 @@
     <!-- Perfil dialog -->
     <string name="perfil_dialog_nombre">Nombre</string>
 
+    <!-- Perfil preferences -->
+    <string name="pref_perfil">pref_perfil</string>
+    <string name="pref_perfil_nombre">pref_perfil_nombre</string>
+
     <!-- Inicio fragment -->
     <string name="tiempoInactividad">Tiempo de Inactividad</string>
 

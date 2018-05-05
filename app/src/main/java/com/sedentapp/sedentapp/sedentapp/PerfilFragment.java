@@ -1,7 +1,9 @@
 package com.sedentapp.sedentapp.sedentapp;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -96,6 +100,12 @@ public class PerfilFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Context context = getActivity();
+        final SharedPreferences perfilPref = context.getSharedPreferences(
+                getString(R.string.pref_perfil), Context.MODE_PRIVATE);
+        String perfil_nombre = perfilPref.getString(getString(R.string.pref_perfil_nombre), "Nombre");
+        TextView tv_nombre_perfil = (TextView) getView().findViewById(R.id.nombre_perfil);
+        tv_nombre_perfil.setText(perfil_nombre);
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this.getContext());
         updateUI(account);
@@ -216,11 +226,10 @@ public class PerfilFragment extends Fragment {
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.dialog_perfil_nombre_foto, null);
         dialogBuilder.setView(dialogView);
-
-//        final EditText edt = (EditText) dialogView.findViewById(R.id.editText_edit_objetivo);
-//        //recuperamos el textview y ponemos el texto segun el tipo de objetivo
-//        TextView tv_tipo_objetivo = dialogView.findViewById(R.id.textview_tipo_objetivo_alertdialog);
-//        tv_tipo_objetivo.setText(objetivo);
+        Context context = getActivity();
+        final SharedPreferences perfilPref = context.getSharedPreferences(
+                getString(R.string.pref_perfil), Context.MODE_PRIVATE);
+        final EditText edt = (EditText) dialogView.findViewById(R.id.edt_dialog_perfil_nf_nombre);
 
         String titulo = getResources().getString(R.string.perfil_dialog_nombre);
         String guardar = getResources().getString(R.string.guardar);
@@ -228,7 +237,18 @@ public class PerfilFragment extends Fragment {
         dialogBuilder.setTitle(titulo);
         dialogBuilder.setPositiveButton(guardar, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //hacer algo con edt.getText().toString();
+
+                SharedPreferences.Editor editor = perfilPref.edit();
+                EditText edt = (EditText) dialogView.findViewById(R.id.edt_dialog_perfil_nf_nombre);
+                edt.setText(edt.getText().toString());
+                if (edt.getText().toString().equals("")){
+                    edt.setError(getString(R.string.texto_vacio));
+                }else {
+                    editor.putString(getString(R.string.pref_perfil_nombre), edt.getText().toString());
+                    editor.commit();
+                    TextView tv_nombre_perfil = (TextView) getView().findViewById(R.id.nombre_perfil);
+                    tv_nombre_perfil.setText(edt.getText().toString());
+                }
             }
         });
         dialogBuilder.setNegativeButton(cancelar, new DialogInterface.OnClickListener() {
@@ -239,6 +259,9 @@ public class PerfilFragment extends Fragment {
         });
         AlertDialog b = dialogBuilder.create();
         b.show();
+        String perfil_nombre = perfilPref.getString(getString(R.string.pref_perfil_nombre),"Nombre");
+        EditText edt_pasos = (EditText) getView().findViewById(R.id.edt_dialog_perfil_nf_nombre);
+        edt.setText(perfil_nombre);
     }
 
 
