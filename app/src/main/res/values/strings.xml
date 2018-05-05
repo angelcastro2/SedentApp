@@ -33,6 +33,18 @@
     <string name="objetivos_dialog_activo">Activo</string>
     <string name="objetivo_generico_dialog">Objetivo</string>
 
+    <!-- preferencias objetivos -->
+    <string name="pref_objetivos">pref_objetivos</string>
+    <string name="pref_objetivos_pasos">pasos</string>
+    <string name="pref_objetivos_distancia">distancia</string>
+    <string name="pref_objetivos_peso">peso</string>
+    <string name="pref_objetivos_actividad">actividad</string>
+
+    <string name="pref_objetivos_pasos_activo">pasos_activo</string>
+    <string name="pref_objetivos_distancia_activo">distancia_activo</string>
+    <string name="pref_objetivos_peso_activo">peso_activo</string>
+    <string name="pref_objetivos_actividad_activo">actividad_activo</string>
+
 
     <!-- Generico -->
     <string name="guardar">Guardar</string>
@@ -221,4 +233,9 @@ El Software se le proporciona "TAL CUAL", sin ningún tipo de soporte técnico o
 \n
 ALGUNAS JURISDICCIONES NO PERMITEN LA EXCLUSIÓN DE GARANTÍAS IMPLÍCITAS, POR LO QUE LA EXCLUSIÓN ANTERIOR PODRÍA NO APLICARSE A USTED. TAMBIÉN PUEDE TENER OTROS DERECHOS LEGALES QUE VARÍAN DE JURISDICCIÓN A JURISDICCIÓN.</string>
 
+    
+    
+    <!-- Errores -->
+    <string name="texto_vacio">Este campo no pude estar vacío</string>
+    
 </resources>

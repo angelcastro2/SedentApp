@@ -26,9 +26,11 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            />
 
         <CheckBox
+            android:id="@+id/objetivo_dialog_check_activo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/objetivos_dialog_activo" />
