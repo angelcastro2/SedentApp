@@ -3,13 +3,16 @@ package com.sedentapp.sedentapp.sedentapp;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -111,13 +114,19 @@ public class ObjetivosFragment extends Fragment {
         SharedPreferences objetivosPref = context.getSharedPreferences(
                 getString(R.string.pref_objetivos), Context.MODE_PRIVATE);
 
-        //recuperamos los valores de los objetivos
+        //recuperamos los valores de los objetivos y si están activos
         Integer objetivo_pasos = objetivosPref.getInt(getString(R.string.pref_objetivos_pasos), 0);
         Integer objetivo_distancia = objetivosPref.getInt(getString(R.string.pref_objetivos_distancia), 0);
         Integer objetivo_peso = objetivosPref.getInt(getString(R.string.pref_objetivos_peso), 0);
         Integer objetivo_actividad = objetivosPref.getInt(getString(R.string.pref_objetivos_actividad), 0);
 
+        Boolean objetivo_pasos_activo = objetivosPref.getBoolean(getString(R.string.pref_objetivos_pasos_activo),false);
+        Boolean objetivo_distancia_activo = objetivosPref.getBoolean(getString(R.string.pref_objetivos_distancia_activo),false);
+        Boolean objetivo_peso_activo = objetivosPref.getBoolean(getString(R.string.pref_objetivos_peso_activo),false);
+        Boolean objetivo_actividad_activo = objetivosPref.getBoolean(getString(R.string.pref_objetivos_actividad_activo),false);
+
         //actualizamos la vista con los valores recuperados
+        //primero los textviews
         TextView tv_pasos = (TextView) getView().findViewById(R.id.objetivo_pasos_valor);
         tv_pasos.setText(objetivo_pasos.toString());
         TextView tv_distancia = (TextView) getView().findViewById(R.id.objetivo_distancia_valor);
@@ -126,6 +135,9 @@ public class ObjetivosFragment extends Fragment {
         tv_peso.setText(objetivo_peso.toString());
         TextView tv_actividad = (TextView) getView().findViewById(R.id.objetivo_actividad_valor);
         tv_actividad.setText(objetivo_actividad.toString());
+        //luego los objetivos activos o inactivos
+        cambioColorObjetivo(objetivo_pasos_activo,objetivo_distancia_activo,objetivo_peso_activo,objetivo_actividad_activo);
+
 
 
         ImageButton button = (ImageButton) getView().findViewById(R.id.boton_edit_pasos);
@@ -169,10 +181,9 @@ public class ObjetivosFragment extends Fragment {
             }
         });
 
-
-
-
     }
+
+
 
     public int getObjetivo_pasos() {
         return objetivo_pasos;
@@ -247,30 +258,51 @@ public class ObjetivosFragment extends Fragment {
         dialogBuilder.setTitle(titulo);
         dialogBuilder.setPositiveButton(guardar, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                SharedPreferences.Editor editor = objetivosPref.edit();
-                if (objetivo == getResources().getString(R.string.pasos_titulo)){
-
-                    editor.putInt(getString(R.string.pref_objetivos_pasos), Integer.parseInt(edt.getText().toString()));
-                    TextView tv_pasos = (TextView) getView().findViewById(R.id.objetivo_pasos_valor);
-                    tv_pasos.setText(edt.getText().toString());
-                }else if(objetivo == getResources().getString(R.string.distancia)){
-
-                    editor.putInt(getString(R.string.pref_objetivos_distancia), Integer.parseInt(edt.getText().toString()));
-                    TextView tv_distancia = (TextView) getView().findViewById(R.id.objetivo_distancia_valor);
-                    tv_distancia.setText(edt.getText().toString());
-                }else if(objetivo == getResources().getString(R.string.peso)){
-
-                    editor.putInt(getString(R.string.pref_objetivos_peso), Integer.parseInt(edt.getText().toString()));
-                    TextView tv_peso = (TextView) getView().findViewById(R.id.objetivo_peso_valor);
-                    tv_peso.setText(edt.getText().toString());
+                CheckBox ck_activo = (CheckBox) dialogView.findViewById(R.id.objetivo_dialog_check_activo);
+                if (edt.getText().toString().equals("")){
+                    edt.setError(getString(R.string.texto_vacio));
                 }else {
+                    //recuperamos las si está activo para actualizarlo luego con el valor adecuado
+                    Boolean objetivo_pasos_activo = objetivosPref.getBoolean(getString(R.string.pref_objetivos_pasos_activo),false);
+                    Boolean objetivo_distancia_activo = objetivosPref.getBoolean(getString(R.string.pref_objetivos_distancia_activo),false);
+                    Boolean objetivo_peso_activo = objetivosPref.getBoolean(getString(R.string.pref_objetivos_peso_activo),false);
+                    Boolean objetivo_actividad_activo = objetivosPref.getBoolean(getString(R.string.pref_objetivos_actividad_activo),false);
 
-                    editor.putInt(getString(R.string.pref_objetivos_actividad), Integer.parseInt(edt.getText().toString()));
-                    TextView tv_actividad = (TextView) getView().findViewById(R.id.objetivo_actividad_valor);
-                    tv_actividad.setText(edt.getText().toString());
+                    //comprobamos los cambios y actualizamos
+                    SharedPreferences.Editor editor = objetivosPref.edit();
+                    if (objetivo == getResources().getString(R.string.pasos_titulo)){
+
+                        editor.putInt(getString(R.string.pref_objetivos_pasos), Integer.parseInt(edt.getText().toString()));
+                        TextView tv_pasos = (TextView) getView().findViewById(R.id.objetivo_pasos_valor);
+                        tv_pasos.setText(edt.getText().toString());
+                        editor.putBoolean(getString(R.string.pref_objetivos_pasos_activo),ck_activo.isChecked());
+                        cambioColorObjetivo(ck_activo.isChecked(),objetivo_distancia_activo,objetivo_peso_activo,objetivo_actividad_activo);
+                    }else if(objetivo == getResources().getString(R.string.distancia)){
+
+                        editor.putInt(getString(R.string.pref_objetivos_distancia), Integer.parseInt(edt.getText().toString()));
+                        TextView tv_distancia = (TextView) getView().findViewById(R.id.objetivo_distancia_valor);
+                        tv_distancia.setText(edt.getText().toString());
+                        editor.putBoolean(getString(R.string.pref_objetivos_distancia_activo),ck_activo.isChecked());
+                        cambioColorObjetivo(objetivo_pasos_activo,ck_activo.isChecked(),objetivo_peso_activo,objetivo_actividad_activo);
+                    }else if(objetivo == getResources().getString(R.string.peso)){
+
+                        editor.putInt(getString(R.string.pref_objetivos_peso), Integer.parseInt(edt.getText().toString()));
+                        TextView tv_peso = (TextView) getView().findViewById(R.id.objetivo_peso_valor);
+                        tv_peso.setText(edt.getText().toString());
+                        editor.putBoolean(getString(R.string.pref_objetivos_peso_activo),ck_activo.isChecked());
+                        cambioColorObjetivo(objetivo_pasos_activo,objetivo_distancia_activo,ck_activo.isChecked(),objetivo_actividad_activo);
+                    }else {
+
+                        editor.putInt(getString(R.string.pref_objetivos_actividad), Integer.parseInt(edt.getText().toString()));
+                        TextView tv_actividad = (TextView) getView().findViewById(R.id.objetivo_actividad_valor);
+                        tv_actividad.setText(edt.getText().toString());
+                        editor.putBoolean(getString(R.string.pref_objetivos_actividad_activo),ck_activo.isChecked());
+                        cambioColorObjetivo(objetivo_pasos_activo,objetivo_distancia_activo,objetivo_peso_activo,ck_activo.isChecked());
+                    }
+                    editor.commit();
                 }
-                editor.commit();
-        
+
+
             }
         });
         dialogBuilder.setNegativeButton(cancelar, new DialogInterface.OnClickListener() {
@@ -281,6 +313,61 @@ public class ObjetivosFragment extends Fragment {
         });
         AlertDialog b = dialogBuilder.create();
         b.show();
+        //una vez creado cargamos los valores de pasos
+        CheckBox ck_activo = (CheckBox) dialogView.findViewById(R.id.objetivo_dialog_check_activo);
+        if (objetivo == getResources().getString(R.string.pasos_titulo)){
+            Integer objetivo_pasos = objetivosPref.getInt(getString(R.string.pref_objetivos_pasos), 0);
+            edt.setText(objetivo_pasos.toString());
+            Boolean objetivo_pasos_activo = objetivosPref.getBoolean(getString(R.string.pref_objetivos_pasos_activo),false);
+            ck_activo.setChecked(objetivo_pasos_activo);
+        }else if(objetivo == getResources().getString(R.string.distancia)){
+
+            Integer objetivo_distancia = objetivosPref.getInt(getString(R.string.pref_objetivos_distancia), 0);
+            edt.setText(objetivo_distancia.toString());
+            Boolean objetivo_distancia_activo = objetivosPref.getBoolean(getString(R.string.pref_objetivos_distancia_activo),false);
+            ck_activo.setChecked(objetivo_distancia_activo);
+        }else if(objetivo == getResources().getString(R.string.peso)){
+
+            Integer objetivo_peso = objetivosPref.getInt(getString(R.string.pref_objetivos_peso), 0);
+            edt.setText(objetivo_peso.toString());
+            Boolean objetivo_peso_activo = objetivosPref.getBoolean(getString(R.string.pref_objetivos_peso_activo),false);
+            ck_activo.setChecked(objetivo_peso_activo);
+        }else {
+
+            Integer objetivo_actividad = objetivosPref.getInt(getString(R.string.pref_objetivos_actividad), 0);
+            edt.setText(objetivo_actividad.toString());
+            Boolean objetivo_actividad_activo = objetivosPref.getBoolean(getString(R.string.pref_objetivos_actividad_activo),false);
+            ck_activo.setChecked(objetivo_actividad_activo);
+        }
+
     }
+
+    private void cambioColorObjetivo(boolean objetivo_pasos_activo, boolean objetivo_distancia_activo, boolean objetivo_peso_activo, boolean objetivo_actividad_activo){
+        CardView cv_pasos = (CardView) getView().findViewById(R.id.objetivo_pasos_base_layout);
+        CardView cv_distancia = (CardView) getView().findViewById(R.id.objetivo_distancia_base_layout);
+        CardView cv_peso = (CardView) getView().findViewById(R.id.objetivo_peso_base_layout);
+        CardView cv_actividad = (CardView) getView().findViewById(R.id.objetivo_actividad_base_layout);
+        if (objetivo_pasos_activo){
+            cv_pasos.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
+        }else {
+            cv_pasos.setCardBackgroundColor(getResources().getColor(R.color.colorAccent_light));
+        }
+        if (objetivo_distancia_activo){
+            cv_distancia.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
+        }else {
+            cv_distancia.setCardBackgroundColor(getResources().getColor(R.color.colorAccent_light));
+        }
+        if (objetivo_peso_activo){
+            cv_peso.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
+        }else {
+            cv_peso.setCardBackgroundColor(getResources().getColor(R.color.colorAccent_light));
+        }
+        if (objetivo_actividad_activo){
+            cv_actividad.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
+        }else {
+            cv_actividad.setCardBackgroundColor(getResources().getColor(R.color.colorAccent_light));
+        }
+    }
+
 
 }
