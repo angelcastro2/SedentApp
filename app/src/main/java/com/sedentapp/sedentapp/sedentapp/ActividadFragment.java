@@ -26,6 +26,8 @@ import com.sedentapp.sedentapp.sedentapp.entities.registropasos.service.Registro
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 
 /**
@@ -56,6 +58,8 @@ public class ActividadFragment extends Fragment {
     List<String> stepList = new ArrayList<String>();
 
     CustomListActividadAdapter listActividad;
+
+    String MES[] = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
 
     ListView listView;
 
@@ -99,24 +103,10 @@ public class ActividadFragment extends Fragment {
 
 
         this.registroPasosService = new RegistroPasosService();
-//        this.registroPasosService.save(new RegistroPasos(3,4,2018,1,100),this.getContext());
-//        this.registroPasosService.save(new RegistroPasos(3,4,2018,2,600),this.getContext());
-//        this.registroPasosService.save(new RegistroPasos(3,4,2018,3,100),this.getContext());
-//        this.registroPasosService.save(new RegistroPasos(3,4,2018,4,300),this.getContext());
-//        this.registroPasosService.save(new RegistroPasos(3,4,2018,5,220),this.getContext());
-//        this.registroPasosService.save(new RegistroPasos(3,4,2018,6,160),this.getContext());
-//        this.registroPasosService.save(new RegistroPasos(3,4,2018,7,300),this.getContext());
-//        this.registroPasosService.save(new RegistroPasos(3,4,2018,8,200),this.getContext());
-//
-//
-//        this.registroPasosService.save(new RegistroPasos(2,4,2018,1,200),this.getContext());
-//        this.registroPasosService.save(new RegistroPasos(2,4,2018,2,100),this.getContext());
-//        this.registroPasosService.save(new RegistroPasos(2,4,2018,3,100),this.getContext());
-//        this.registroPasosService.save(new RegistroPasos(2,4,2018,4,500),this.getContext());
-//        this.registroPasosService.save(new RegistroPasos(2,4,2018,5,720),this.getContext());
-//        this.registroPasosService.save(new RegistroPasos(2,4,2018,6,360),this.getContext());
-//        this.registroPasosService.save(new RegistroPasos(2,4,2018,7,500),this.getContext());
-//        this.registroPasosService.save(new RegistroPasos(2,4,2018,8,300),this.getContext());
+        // Si no se tienen datos, descomentar la siguiente línea, acceder a la función y crear datos (POR LO MENOS) para el día actual
+        // (porque es donde se inicia el fragment de actividad por defecto). Ejecutar la app, acceder una vez a actividad, y luego comentar la linea
+        // y volver a rearrancar.
+        // rellenarDatos();
 
         Calendar calendar = Calendar.getInstance();
         List<RegistroPasos> registroPasos = this.registroPasosService.getRegistroPasosByDia(this.getContext(),
@@ -178,9 +168,9 @@ public class ActividadFragment extends Fragment {
                 if (s.equalsIgnoreCase("Diario")){
                     moreResults = settearListView("Diario", -1, false);
                 } else if (s.equalsIgnoreCase("Mensual")) {
-                    moreResults=true;
+                    moreResults = settearListView("Mensual", -1, false);
                 } else {
-                    moreResults=true;
+                   moreResults = settearListView("Anual", -1, false);
                 }
 
                 if (!moreResults){
@@ -199,9 +189,9 @@ public class ActividadFragment extends Fragment {
                 if (s.equalsIgnoreCase("Diario")){
                     moreResults = settearListView("Diario", 1, false);
                 } else if (s.equalsIgnoreCase("Mensual")) {
-                    moreResults=true;
+                     moreResults = settearListView("Mensual", 1, false);
                 } else {
-                    moreResults=true;
+                    moreResults = settearListView("Anual", 1, false);
                 }
 
                 if (!moreResults){
@@ -259,7 +249,7 @@ public class ActividadFragment extends Fragment {
             stepList.clear();
 
             for (RegistroPasos registroPaso : registroPasos){
-                dateList.add(registroPaso.getDia()+"/"+registroPaso.getMes()+"/"+registroPaso.getAno()+ " " + registroPaso.getHora()+":00");
+                dateList.add(registroPaso.getHora()-1+":00 - "+registroPaso.getHora()+":00");
                 stepList.add(String.valueOf(registroPaso.getPasos()));
             }
             TextView textView = (TextView) view.findViewById(R.id.texto_fecha_grafica);
@@ -272,10 +262,11 @@ public class ActividadFragment extends Fragment {
             listView = (ListView)view.findViewById(R.id.listview);
             listView.setAdapter(listActividad);
 
-
-            String[] labels = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"};//horizontal axis
-            float[] values = new float[24]; //values
-            for (int i = 0; i<24; i++) {
+            int numHoras = 24;
+            String[] labels = new String[numHoras];//horizontal axis
+            float[] values = new float[numHoras]; //values
+            for (int i = 0; i<numHoras; i++) {
+                labels[i] = String.valueOf(i);
                 if (i < registroPasos.size()) {
                     values[i] = registroPasos.get(i).getPasos();
                 } else {
@@ -285,9 +276,96 @@ public class ActividadFragment extends Fragment {
             createChart(labels, values);
 
         } else if (rango.equalsIgnoreCase("Mensual")) {
-//            long a = registroPasosService.getPasosByDia(this.getContext(),
-//                    fecha.get(Calendar.DAY_OF_MONTH), fecha.get(Calendar.MONTH), fecha.get(Calendar.YEAR));
+            if (primeraVez) {
+                fecha = calendar;
+            } else {
+                fecha.add(Calendar.MONTH, cambioDeFecha);
+            }
+
+            Map<Integer, Integer> registroPasosMap = this.registroPasosService.getMapaPasosMensualesByDia(this.getContext(),
+                    fecha.get(Calendar.MONTH), fecha.get(Calendar.YEAR));
+
+            if (registroPasosMap.isEmpty()){
+                if(!primeraVez) {
+                    fecha.add(Calendar.MONTH, -cambioDeFecha);
+                }
+                return false;
+            }
+
+            dateList.clear();
+            stepList.clear();
+
+            Locale spanish = new Locale("es", "ES");
+            for (Map.Entry<Integer, Integer> entry : registroPasosMap.entrySet()){
+                Calendar fechaPrint = Calendar.getInstance();
+                fechaPrint.set(fecha.get(Calendar.YEAR), fecha.get(Calendar.MONTH), entry.getKey());
+                dateList.add(String.valueOf(entry.getKey())+", "+fechaPrint.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, spanish));
+                stepList.add(String.valueOf(entry.getValue()));
+            }
+
+            TextView textView = (TextView) view.findViewById(R.id.texto_fecha_grafica);
+            textView.setText(MES[fecha.get(Calendar.MONTH)]);
+            dateArray = dateList.toArray(new String[dateList.size()]);
+            stepsArray = stepList.toArray(new String[stepList.size()]);
+
+
+            listActividad = new CustomListActividadAdapter(this.getActivity(), dateArray, stepsArray);
+            listView = (ListView)view.findViewById(R.id.listview);
+            listView.setAdapter(listActividad);
+
+            int numDias = fecha.getActualMaximum(Calendar.DAY_OF_MONTH);
+            String[] labels = new String[numDias];
+            float[] values = new float[numDias]; //values
+            for (int i = 0; i<numDias; i++){
+                labels[i] = String.valueOf(i+1);
+                if (registroPasosMap.containsKey(i+1)) {
+                    values[i] = registroPasosMap.get(i+1);
+                } else {
+                    values[i] = 0;
+                }
+            }
+            createChart(labels, values);
+
         } else {
+            if (primeraVez) {
+                fecha = calendar;
+            } else {
+                fecha.add(Calendar.YEAR, cambioDeFecha);
+            }
+
+            Map<Integer, Integer> registroPasosMap = this.registroPasosService.getMapaPasosAnualesByMes(getContext(),fecha.get(Calendar.YEAR));
+
+
+            dateList.clear();
+            stepList.clear();
+
+            for (Map.Entry<Integer, Integer> entry : registroPasosMap.entrySet()){
+                dateList.add(MES[entry.getKey()]);
+                stepList.add(String.valueOf(entry.getValue()));
+            }
+
+            TextView textView = (TextView) view.findViewById(R.id.texto_fecha_grafica);
+            textView.setText(String.valueOf(fecha.get(Calendar.YEAR)));
+            dateArray = dateList.toArray(new String[dateList.size()]);
+            stepsArray = stepList.toArray(new String[stepList.size()]);
+
+
+            listActividad = new CustomListActividadAdapter(this.getActivity(), dateArray, stepsArray);
+            listView = (ListView)view.findViewById(R.id.listview);
+            listView.setAdapter(listActividad);
+
+            int numMeses = 12;
+            String[] labels = new String[numMeses];
+            float[] values = new float[numMeses]; //values
+            for (int i = 0; i<numMeses; i++){
+                labels[i] = String.valueOf(i+1);
+                if (registroPasosMap.containsKey(i+1)) {
+                    values[i] = registroPasosMap.get(i+1);
+                } else {
+                    values[i] = 0;
+                }
+            }
+            createChart(labels, values);
 
         }
 
@@ -307,6 +385,185 @@ public class ActividadFragment extends Fragment {
         chart.show();
     }
 
+    private void rellenarDatos(){
+
+        // TENED EN CUENTA QUE LOS MESES EN CALENDAR EMPIEZAN EN 0 !!!
+        
+        this.registroPasosService.save(new RegistroPasos(2,3,2017,1,200),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2017,2,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2017,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2017,4,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2017,5,720),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2017,6,360),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2017,7,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2017,8,300),this.getContext());
+
+        this.registroPasosService.save(new RegistroPasos(3,3,2017,1,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2017,2,600),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2017,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2017,4,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2017,5,220),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2017,6,160),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2017,7,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2017,8,200),this.getContext());
+
+        this.registroPasosService.save(new RegistroPasos(2,4,2017,1,200),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,4,2017,2,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,4,2017,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,4,2017,4,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,4,2017,5,720),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,4,2017,6,360),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,4,2017,7,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,4,2017,8,300),this.getContext());
+
+        this.registroPasosService.save(new RegistroPasos(3,4,2017,1,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,4,2017,2,600),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,4,2017,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,4,2017,4,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,4,2017,5,220),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,4,2017,6,160),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,4,2017,7,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,4,2017,8,200),this.getContext());
+
+
+
+        this.registroPasosService.save(new RegistroPasos(3,5,2017,1,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2017,2,600),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2017,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2017,4,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2017,5,220),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2017,6,160),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2017,7,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2017,8,200),this.getContext());
+
+
+        this.registroPasosService.save(new RegistroPasos(2,5,2017,1,200),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2017,2,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2017,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2017,4,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2017,5,720),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2017,6,360),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2017,7,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2017,8,300),this.getContext());
+
+        /* AÑO 2 */
+
+        this.registroPasosService.save(new RegistroPasos(2,3,2018,1,200),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2018,2,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2018,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2018,4,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2018,5,720),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2018,6,360),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2018,7,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2018,8,300),this.getContext());
+
+        this.registroPasosService.save(new RegistroPasos(3,3,2018,1,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2018,2,600),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2018,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2018,4,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2018,5,220),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2018,6,160),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2018,7,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2018,8,200),this.getContext());
+
+        this.registroPasosService.save(new RegistroPasos(5,4,2018,1,200),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(5,4,2018,2,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(5,4,2018,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(5,4,2018,4,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(5,4,2018,5,720),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(5,4,2018,6,360),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(5,4,2018,7,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(5,4,2018,8,300),this.getContext());
+
+        this.registroPasosService.save(new RegistroPasos(6,4,2018,1,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(6,4,2018,2,600),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(6,4,2018,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(6,4,2018,4,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(6,4,2018,5,220),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(6,4,2018,6,160),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(6,4,2018,7,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(6,4,2018,8,200),this.getContext());
+
+
+
+        this.registroPasosService.save(new RegistroPasos(3,5,2018,1,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2018,2,600),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2018,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2018,4,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2018,5,220),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2018,6,160),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2018,7,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2018,8,200),this.getContext());
+
+
+        this.registroPasosService.save(new RegistroPasos(2,5,2018,1,200),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2018,2,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2018,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2018,4,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2018,5,720),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2018,6,360),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2018,7,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2018,8,300),this.getContext());
+
+        /* AÑO 3 */
+
+        this.registroPasosService.save(new RegistroPasos(2,3,2019,1,200),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2019,2,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2019,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2019,4,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2019,5,720),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2019,6,360),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2019,7,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,3,2019,8,300),this.getContext());
+
+        this.registroPasosService.save(new RegistroPasos(3,3,2019,1,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2019,2,600),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2019,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2019,4,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2019,5,220),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2019,6,160),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2019,7,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,3,2019,8,200),this.getContext());
+
+        this.registroPasosService.save(new RegistroPasos(2,4,2019,1,200),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,4,2019,2,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,4,2019,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,4,2019,4,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,4,2019,5,720),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,4,2019,6,360),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,4,2019,7,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,4,2019,8,300),this.getContext());
+
+        this.registroPasosService.save(new RegistroPasos(3,4,2019,1,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,4,2019,2,600),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,4,2019,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,4,2019,4,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,4,2019,5,220),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,4,2019,6,160),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,4,2019,7,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,4,2019,8,200),this.getContext());
+
+
+
+        this.registroPasosService.save(new RegistroPasos(3,5,2019,1,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2019,2,600),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2019,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2019,4,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2019,5,220),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2019,6,160),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2019,7,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(3,5,2019,8,200),this.getContext());
+                                                               
+                                                               
+        this.registroPasosService.save(new RegistroPasos(2,5,2019,1,200),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2019,2,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2019,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2019,4,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2019,5,720),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2019,6,360),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2019,7,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(2,5,2019,8,300),this.getContext());
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
