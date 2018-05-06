@@ -53,12 +53,11 @@
             android:gravity="center"/>
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/texto_fecha_grafica"
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:gravity="center"
-            android:text="@string/actividad_mes"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold" />

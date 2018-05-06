@@ -29,6 +29,12 @@ public interface RegistroPasosDao {
     @Query("SELECT * FROM RegistroPasos WHERE dia = :dia AND mes = :mes AND ano = :ano")
     List<RegistroPasos> getRegistroPasosByDia(int dia, int mes, int ano);
 
+    @Query("SELECT * FROM RegistroPasos WHERE mes = :mes AND ano = :ano")
+    List<RegistroPasos> getRegistroPasosByMes(int mes, int ano);
+
+    @Query("SELECT * FROM RegistroPasos WHERE ano = :ano")
+    List<RegistroPasos> getRegistroPasosByAno(int ano);
+
     @Update
     void update (RegistroPasos registroPasos);
 
