@@ -103,9 +103,23 @@ public class PerfilFragment extends Fragment {
         Context context = getActivity();
         final SharedPreferences perfilPref = context.getSharedPreferences(
                 getString(R.string.pref_perfil), Context.MODE_PRIVATE);
+        //cargamos los valores iniciales
         String perfil_nombre = perfilPref.getString(getString(R.string.pref_perfil_nombre), "Nombre");
+        String perfil_edad = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_edad), 0));
+        String perfil_estatura = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_estatura), 0));
+        String perfil_peso = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_peso), 0));
+        String perfil_zancada = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_zancada), 0));
         TextView tv_nombre_perfil = (TextView) getView().findViewById(R.id.nombre_perfil);
         tv_nombre_perfil.setText(perfil_nombre);
+        TextView tv_edad = (TextView) getView().findViewById(R.id.tv_edad_valor);
+        tv_edad.setText(perfil_edad);
+        TextView tv_estatura = (TextView) getView().findViewById(R.id.tv_estatura_valor);
+        tv_estatura.setText(perfil_estatura);
+        TextView tv_peso = (TextView) getView().findViewById(R.id.tv_peso_valor);
+        tv_peso.setText(perfil_peso);
+        TextView tv_zancada = (TextView) getView().findViewById(R.id.tv_zancada_valor);
+        tv_zancada.setText(perfil_zancada);
+
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this.getContext());
         updateUI(account);
@@ -270,11 +284,25 @@ public class PerfilFragment extends Fragment {
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.dialog_perfil_datos_personales, null);
         dialogBuilder.setView(dialogView);
+        Context context = getActivity();
+        final SharedPreferences perfilPref = context.getSharedPreferences(
+                getString(R.string.pref_perfil), Context.MODE_PRIVATE);
 
-//        final EditText edt = (EditText) dialogView.findViewById(R.id.editText_edit_objetivo);
-//        //recuperamos el textview y ponemos el texto segun el tipo de objetivo
-//        TextView tv_tipo_objetivo = dialogView.findViewById(R.id.textview_tipo_objetivo_alertdialog);
-//        tv_tipo_objetivo.setText(objetivo);
+        final EditText edt_edad = (EditText) dialogView.findViewById(R.id.edt_dialog_perfil_dp_edad);
+        final EditText edt_estatura = (EditText) dialogView.findViewById(R.id.edt_dialog_perfil_dp_estatura);
+        final EditText edt_peso = (EditText) dialogView.findViewById(R.id.edt_dialog_perfil_dp_peso);
+        final EditText edt_zancada = (EditText) dialogView.findViewById(R.id.edt_dialog_perfil_dp_zancada);
+        //cargamos los valores iniciales
+        String perfil_nombre = perfilPref.getString(getString(R.string.pref_perfil_nombre), "Nombre");
+        String perfil_edad = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_edad), 0));
+        String perfil_estatura = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_estatura), 0));
+        String perfil_peso = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_peso), 0));
+        String perfil_zancada = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_zancada), 0));
+        //rellenamos los editText con los valores
+        edt_edad.setText(perfil_edad);
+        edt_estatura.setText(perfil_estatura);
+        edt_peso.setText(perfil_peso);
+        edt_zancada.setText(perfil_zancada);
 
         String titulo = getResources().getString(R.string.datos_personales_perfil);
         String guardar = getResources().getString(R.string.guardar);
@@ -282,7 +310,37 @@ public class PerfilFragment extends Fragment {
         dialogBuilder.setTitle(titulo);
         dialogBuilder.setPositiveButton(guardar, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //hacer algo con edt.getText().toString();
+                SharedPreferences.Editor editor = perfilPref.edit();
+
+                if ((edt_edad.getText().toString().equals(""))){
+                    //no hacer nada
+                }else{
+                    editor.putInt(getString(R.string.pref_perfil_edad),Integer.parseInt(edt_edad.getText().toString()));
+                    TextView tv_edad = (TextView) getView().findViewById(R.id.tv_edad_valor);
+                    tv_edad.setText(edt_edad.getText().toString());
+                }
+                if ((edt_estatura.getText().toString().equals(""))){
+                    //no hacer nada
+                }else{
+                    editor.putInt(getString(R.string.pref_perfil_estatura),Integer.parseInt(edt_estatura.getText().toString()));
+                    TextView tv_estatura = (TextView) getView().findViewById(R.id.tv_estatura_valor);
+                    tv_estatura.setText(edt_estatura.getText().toString());
+                }
+                if ((edt_peso.getText().toString().equals(""))){
+                    //no hacer nada
+                }else{
+                    editor.putInt(getString(R.string.pref_perfil_peso),Integer.parseInt(edt_peso.getText().toString()));
+                    TextView tv_peso = (TextView) getView().findViewById(R.id.tv_peso_valor);
+                    tv_peso.setText(edt_peso.getText().toString());
+                }
+                if ((edt_zancada.getText().toString().equals(""))){
+                    //no hacer nada
+                }else{
+                    editor.putInt(getString(R.string.pref_perfil_zancada),Integer.parseInt(edt_zancada.getText().toString()));
+                    TextView tv_zancada = (TextView) getView().findViewById(R.id.tv_zancada_valor);
+                    tv_zancada.setText(edt_zancada.getText().toString());
+                }
+                editor.commit();
             }
         });
         dialogBuilder.setNegativeButton(cancelar, new DialogInterface.OnClickListener() {

@@ -80,6 +80,10 @@
     <!-- Perfil preferences -->
     <string name="pref_perfil">pref_perfil</string>
     <string name="pref_perfil_nombre">pref_perfil_nombre</string>
+    <string name="pref_perfil_edad">pref_perfil_edad</string>
+    <string name="pref_perfil_estatura">pref_perfil_estatura</string>
+    <string name="pref_perfil_peso">pref_perfil_peso</string>
+    <string name="pref_perfil_zancada">pref_perfil_zancada</string>
 
     <!-- Inicio fragment -->
     <string name="tiempoInactividad">Tiempo de Inactividad</string>
