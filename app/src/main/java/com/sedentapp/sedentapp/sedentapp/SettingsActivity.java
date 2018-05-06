@@ -193,7 +193,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 //            bindPreferenceSummaryToValue(findPreference("example_text"));
 //            bindPreferenceSummaryToValue(findPreference("example_list"));
             bindPreferenceSummaryToValue(findPreference("inactividad_list"));
-            bindPreferenceSummaryToValue(findPreference("actividad_list"));
+//            bindPreferenceSummaryToValue(findPreference("actividad_list"));
         }
 
         @Override
