@@ -74,6 +74,16 @@
     <string name="facebook_app_id">595917787453039</string>
     <string name="fb_login_protocol_scheme">fb595917787453039</string>
 
+    <!-- Perfil dialog -->
+    <string name="perfil_dialog_nombre">Nombre</string>
+
+    <!-- Perfil preferences -->
+    <string name="pref_perfil">pref_perfil</string>
+    <string name="pref_perfil_nombre">pref_perfil_nombre</string>
+    <string name="pref_perfil_edad">pref_perfil_edad</string>
+    <string name="pref_perfil_estatura">pref_perfil_estatura</string>
+    <string name="pref_perfil_peso">pref_perfil_peso</string>
+    <string name="pref_perfil_zancada">pref_perfil_zancada</string>
 
     <!-- Inicio fragment -->
     <string name="tiempoInactividad">Tiempo de Inactividad</string>

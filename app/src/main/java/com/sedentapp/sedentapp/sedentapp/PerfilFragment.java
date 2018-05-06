@@ -1,16 +1,22 @@
 package com.sedentapp.sedentapp.sedentapp;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -94,6 +100,26 @@ public class PerfilFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Context context = getActivity();
+        final SharedPreferences perfilPref = context.getSharedPreferences(
+                getString(R.string.pref_perfil), Context.MODE_PRIVATE);
+        //cargamos los valores iniciales
+        String perfil_nombre = perfilPref.getString(getString(R.string.pref_perfil_nombre), "Nombre");
+        String perfil_edad = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_edad), 0));
+        String perfil_estatura = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_estatura), 0));
+        String perfil_peso = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_peso), 0));
+        String perfil_zancada = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_zancada), 0));
+        TextView tv_nombre_perfil = (TextView) getView().findViewById(R.id.nombre_perfil);
+        tv_nombre_perfil.setText(perfil_nombre);
+        TextView tv_edad = (TextView) getView().findViewById(R.id.tv_edad_valor);
+        tv_edad.setText(perfil_edad);
+        TextView tv_estatura = (TextView) getView().findViewById(R.id.tv_estatura_valor);
+        tv_estatura.setText(perfil_estatura);
+        TextView tv_peso = (TextView) getView().findViewById(R.id.tv_peso_valor);
+        tv_peso.setText(perfil_peso);
+        TextView tv_zancada = (TextView) getView().findViewById(R.id.tv_zancada_valor);
+        tv_zancada.setText(perfil_zancada);
+
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this.getContext());
         updateUI(account);
@@ -108,7 +134,7 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-        Button calibrateStepButton = (Button) getView().findViewById(R.id.calibrate_step_button);
+        ImageButton calibrateStepButton = (ImageButton) getView().findViewById(R.id.calibrate_step_button);
         // Capture button clicks
         calibrateStepButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -132,7 +158,7 @@ public class PerfilFragment extends Fragment {
         boton_edit.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Editar nombre", Toast.LENGTH_SHORT).show();
+                personalizarDialogPerfilNombreFoto();
 
             }
         });
@@ -141,7 +167,7 @@ public class PerfilFragment extends Fragment {
         boton_edit2.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Editar datos", Toast.LENGTH_SHORT).show();
+                personalizarDialogDatosPersonales();
 
             }
         });
@@ -208,28 +234,35 @@ public class PerfilFragment extends Fragment {
         }
     }
 
-    /**
-     * Abre el alert dialog de editar objetivos
-     * @param objetivo nombre del objetivo a editar para mostrar en un textview
-     */
-    /*public void personalizarObjetivoDialog(String objetivo) {
+
+    public void personalizarDialogPerfilNombreFoto() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this.getActivity());
         LayoutInflater inflater = this.getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.dialog_objetivos, null);
+        final View dialogView = inflater.inflate(R.layout.dialog_perfil_nombre_foto, null);
         dialogBuilder.setView(dialogView);
+        Context context = getActivity();
+        final SharedPreferences perfilPref = context.getSharedPreferences(
+                getString(R.string.pref_perfil), Context.MODE_PRIVATE);
+        final EditText edt = (EditText) dialogView.findViewById(R.id.edt_dialog_perfil_nf_nombre);
 
-        final EditText edt = (EditText) dialogView.findViewById(R.id.editText_edit_objetivo);
-        //recuperamos el textview y ponemos el texto segun el tipo de objetivo
-        TextView tv_tipo_objetivo = dialogView.findViewById(R.id.textview_tipo_objetivo_alertdialog);
-        tv_tipo_objetivo.setText(objetivo);
-
-        String titulo = getResources().getString(R.string.objetivos_dialog_titulo);
+        String titulo = getResources().getString(R.string.perfil_dialog_nombre);
         String guardar = getResources().getString(R.string.guardar);
         String cancelar = getResources().getString(R.string.cancelar);
         dialogBuilder.setTitle(titulo);
         dialogBuilder.setPositiveButton(guardar, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //hacer algo con edt.getText().toString();
+
+                SharedPreferences.Editor editor = perfilPref.edit();
+                EditText edt = (EditText) dialogView.findViewById(R.id.edt_dialog_perfil_nf_nombre);
+                edt.setText(edt.getText().toString());
+                if (edt.getText().toString().equals("")){
+                    edt.setError(getString(R.string.texto_vacio));
+                }else {
+                    editor.putString(getString(R.string.pref_perfil_nombre), edt.getText().toString());
+                    editor.commit();
+                    TextView tv_nombre_perfil = (TextView) getView().findViewById(R.id.nombre_perfil);
+                    tv_nombre_perfil.setText(edt.getText().toString());
+                }
             }
         });
         dialogBuilder.setNegativeButton(cancelar, new DialogInterface.OnClickListener() {
@@ -240,6 +273,87 @@ public class PerfilFragment extends Fragment {
         });
         AlertDialog b = dialogBuilder.create();
         b.show();
-    }*/
+        String perfil_nombre = perfilPref.getString(getString(R.string.pref_perfil_nombre),"Nombre");
+        EditText edt_pasos = (EditText) getView().findViewById(R.id.edt_dialog_perfil_nf_nombre);
+        edt.setText(perfil_nombre);
+    }
+
+
+    public void personalizarDialogDatosPersonales() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this.getActivity());
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_perfil_datos_personales, null);
+        dialogBuilder.setView(dialogView);
+        Context context = getActivity();
+        final SharedPreferences perfilPref = context.getSharedPreferences(
+                getString(R.string.pref_perfil), Context.MODE_PRIVATE);
+
+        final EditText edt_edad = (EditText) dialogView.findViewById(R.id.edt_dialog_perfil_dp_edad);
+        final EditText edt_estatura = (EditText) dialogView.findViewById(R.id.edt_dialog_perfil_dp_estatura);
+        final EditText edt_peso = (EditText) dialogView.findViewById(R.id.edt_dialog_perfil_dp_peso);
+        final EditText edt_zancada = (EditText) dialogView.findViewById(R.id.edt_dialog_perfil_dp_zancada);
+        //cargamos los valores iniciales
+        String perfil_nombre = perfilPref.getString(getString(R.string.pref_perfil_nombre), "Nombre");
+        String perfil_edad = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_edad), 0));
+        String perfil_estatura = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_estatura), 0));
+        String perfil_peso = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_peso), 0));
+        String perfil_zancada = Integer.toString(perfilPref.getInt(getString(R.string.pref_perfil_zancada), 0));
+        //rellenamos los editText con los valores
+        edt_edad.setText(perfil_edad);
+        edt_estatura.setText(perfil_estatura);
+        edt_peso.setText(perfil_peso);
+        edt_zancada.setText(perfil_zancada);
+
+        String titulo = getResources().getString(R.string.datos_personales_perfil);
+        String guardar = getResources().getString(R.string.guardar);
+        String cancelar = getResources().getString(R.string.cancelar);
+        dialogBuilder.setTitle(titulo);
+        dialogBuilder.setPositiveButton(guardar, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                SharedPreferences.Editor editor = perfilPref.edit();
+
+                if ((edt_edad.getText().toString().equals(""))){
+                    //no hacer nada
+                }else{
+                    editor.putInt(getString(R.string.pref_perfil_edad),Integer.parseInt(edt_edad.getText().toString()));
+                    TextView tv_edad = (TextView) getView().findViewById(R.id.tv_edad_valor);
+                    tv_edad.setText(edt_edad.getText().toString());
+                }
+                if ((edt_estatura.getText().toString().equals(""))){
+                    //no hacer nada
+                }else{
+                    editor.putInt(getString(R.string.pref_perfil_estatura),Integer.parseInt(edt_estatura.getText().toString()));
+                    TextView tv_estatura = (TextView) getView().findViewById(R.id.tv_estatura_valor);
+                    tv_estatura.setText(edt_estatura.getText().toString());
+                }
+                if ((edt_peso.getText().toString().equals(""))){
+                    //no hacer nada
+                }else{
+                    editor.putInt(getString(R.string.pref_perfil_peso),Integer.parseInt(edt_peso.getText().toString()));
+                    TextView tv_peso = (TextView) getView().findViewById(R.id.tv_peso_valor);
+                    tv_peso.setText(edt_peso.getText().toString());
+                }
+                if ((edt_zancada.getText().toString().equals(""))){
+                    //no hacer nada
+                }else{
+                    editor.putInt(getString(R.string.pref_perfil_zancada),Integer.parseInt(edt_zancada.getText().toString()));
+                    TextView tv_zancada = (TextView) getView().findViewById(R.id.tv_zancada_valor);
+                    tv_zancada.setText(edt_zancada.getText().toString());
+                }
+                editor.commit();
+            }
+        });
+        dialogBuilder.setNegativeButton(cancelar, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //pass
+                dialog.dismiss();
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
+    }
+
+
+
 
 }
