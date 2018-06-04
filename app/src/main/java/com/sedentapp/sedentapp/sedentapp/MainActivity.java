@@ -141,6 +141,11 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = new InicioFragment();
         fragmentTransaction.replace(R.id.MainContainer,fragment);
         fragmentTransaction.commit();
+
+        //iniciamos el servicio de contar pasos
+        Intent mStepsIntent = new Intent(this.getApplicationContext(), StepsService.class);
+        startService(mStepsIntent);
+
     }
 
     @Override

@@ -77,6 +77,11 @@
             android:name=".ReadDatabaseService"
             android:enabled="true"
             android:exported="true"></service>
+
+        <service
+            android:name=".StepsService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>
