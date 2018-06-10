@@ -126,7 +126,9 @@ public class ActividadFragment extends Fragment {
         listView = (ListView)view.findViewById(R.id.listview);
         listView.setAdapter(listActividad);
 
-
+        if (!registroPasos.isEmpty()){
+            view.findViewById(R.id.texto_no_datos).setVisibility(View.GONE);
+        }
         return view;
     }
 
@@ -448,14 +450,14 @@ public class ActividadFragment extends Fragment {
 
         /* AÑO 2 */
 
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,1,200),this.getContext());
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,2,100),this.getContext());
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,3,100),this.getContext());
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,4,500),this.getContext());
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,5,720),this.getContext());
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,6,360),this.getContext());
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,7,500),this.getContext());
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,8,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,1,200),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,2,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,4,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,5,720),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,6,360),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,7,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,8,300),this.getContext());
 
         this.registroPasosService.save(new RegistroPasos(3,3,2018,1,100),this.getContext());
         this.registroPasosService.save(new RegistroPasos(3,3,2018,2,600),this.getContext());
