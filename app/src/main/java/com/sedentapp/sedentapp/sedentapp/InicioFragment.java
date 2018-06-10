@@ -154,12 +154,6 @@ public class InicioFragment extends Fragment {
 
     private int getInactivityHours(List<RegistroPasos> registroPasosByDia) {
 
-        int hora1 = 0;
-        int hora2 = 0;
-
-        int max_diff = 0;
-        int diff = 0;
-
         if (registroPasosByDia.size() > 0) {
             int lastHour = registroPasosByDia.get(registroPasosByDia.size()-1).getHora();
             int now = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
