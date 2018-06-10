@@ -136,15 +136,28 @@ public class InicioFragment extends Fragment {
         List<RegistroPasos> registroPasosByDia = this.registroPasosService.getRegistroPasosByDia(this.getContext(),
                 calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
 
-        float[] values = new float[registroPasosByDia.size()];
-        for (int i = 0; i < registroPasosByDia.size(); i++) {
-            values[i] = (float) registroPasosByDia.get(i).getPasos();
-        }
-
         updateDailyStepCounter(steps);
 
+        float[] values = buildValues(registroPasosByDia);
         updateChart(values);
 
+    }
+
+    public float[] buildValues(List<RegistroPasos> registroPasosByDia) {
+
+        int numHoras = 24;
+        String[] labels = new String[numHoras];//horizontal axis
+        float[] values = new float[numHoras]; //values
+        for (int i = 0; i<numHoras; i++) {
+            labels[i] = String.valueOf(i);
+            if (i < registroPasosByDia.size()) {
+                values[i] = registroPasosByDia.get(i).getPasos();
+            } else {
+                values[i] = 0;
+            }
+        }
+
+        return values;
     }
 
     public boolean estaVisible(){
