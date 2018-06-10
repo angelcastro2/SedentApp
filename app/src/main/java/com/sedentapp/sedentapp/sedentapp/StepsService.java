@@ -30,8 +30,6 @@ public class StepsService extends Service implements SensorEventListener {
     protected static final String TAG = "SedentApp";
     private RegistroPasosService registroPasosService;
 
-    private NotificationManager mNotificationManager;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -39,8 +37,6 @@ public class StepsService extends Service implements SensorEventListener {
 
         mSensorManager = (SensorManager)
                 this.getSystemService(Context.SENSOR_SERVICE);
-
-        this.mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);// Notification getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
             mStepDetectorSensor =
@@ -52,7 +48,7 @@ public class StepsService extends Service implements SensorEventListener {
             this.registroPasosService = new RegistroPasosService();
 
             Timer time = new Timer(); // Instantiate Timer Object
-            CheckInactivityTask st = new CheckInactivityTask(getApplicationContext(), this.mNotificationManager); // Instantiate SheduledTask class
+            CheckInactivityTask st = new CheckInactivityTask(getApplicationContext()); // Instantiate SheduledTask class
             time.schedule(st, 0, 1000*60); // Create Repetitively task for every 1 secs
 
         }
