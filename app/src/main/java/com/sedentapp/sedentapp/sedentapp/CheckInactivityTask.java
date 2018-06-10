@@ -46,6 +46,7 @@ public class CheckInactivityTask extends TimerTask {
             diff = hora2 - hora1;
             if (diff > max_diff) {
                 max_diff = diff;
+                hora1 = hora2;
             }
         }
 
@@ -69,19 +70,23 @@ public class CheckInactivityTask extends TimerTask {
         this.context.sendBroadcast(intent);
 
 
-        Intent resultIntent = new Intent(this.context, MainActivity.class);
-        PendingIntent pIntent = PendingIntent.getActivity(this.context, 0, resultIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
+//        Intent resultIntent = new Intent(this.context, MainActivity.class);
+//        PendingIntent pIntent = PendingIntent.getActivity(this.context, 0, resultIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        Notification.Builder mBuilder = new Notification.Builder(this.context) // builder notification
-                .setContentTitle("Tiemop de inactividad demasiado alto!")
-                .setContentText("Llevas " + inactivityHours + " horas inactivo") .setWhen(System.currentTimeMillis())
-                .setVibrate(new long[]{0,100,200,300}).setLights(Color.RED, 2000, 1000)
-                .setTicker("New notification arrived!") // text shown when notification arrived
-                .addAction(android.R.drawable.ic_menu_share, "Share", pIntent) // max. 3 buttons
-                .setContentIntent(pIntent);
+//        Notification.Builder mBuilder = new Notification.Builder(this.context) // builder notification
+//                .setSmallIcon(R.drawable.ic_fitness_center_black_24dp)
+//                .setContentTitle("Tiempo de inactividad demasiado alto!")
+//                .setContentText("Llevas " + inactivityHours + " horas inactivo") .setWhen(System.currentTimeMillis())
+//                .setVibrate(new long[]{0,100,200,300}).setLights(Color.RED, 2000, 1000)
+//                .setTicker("New notification arrived!") // text shown when notification arrived
+//                .addAction(android.R.drawable.ic_menu_share, "Share", pIntent) // max. 3 buttons
+//                .setContentIntent(pIntent);
+//        mNotificationManager.notify(0, mBuilder.build());
+
 
         if (inactivityHours > 2) {
-            mNotificationManager.notify(0, mBuilder.build());
+            NotificationHelper notificationHelper = new NotificationHelper(this.context);
+            notificationHelper.createNotification("Tiempo de inactividad demasiado alto!","Llevas " + inactivityHours + " horas inactivo");
         }
 
     }

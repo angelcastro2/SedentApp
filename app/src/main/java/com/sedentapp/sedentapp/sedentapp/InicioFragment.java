@@ -165,6 +165,7 @@ public class InicioFragment extends Fragment {
             diff = hora2 - hora1;
             if (diff > max_diff) {
                 max_diff = diff;
+                hora1 = hora2;
             }
         }
 
@@ -238,6 +239,8 @@ public class InicioFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        getContext().unregisterReceiver(inactivityTimeReceiver);
+        getContext().unregisterReceiver(receiver);
     }
 
     @Override
