@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
@@ -133,13 +134,19 @@ public class InicioFragment extends Fragment {
 
     }
 
+    public boolean estaVisible(){
+        return this.isVisible();
+    }
+
     private class UpdateDailyStepCounterBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Bundle extras = intent.getExtras();
-            int dailyStepCounter = extras.getInt("dailyStepCounter");
-            Toast.makeText(getContext(), "Daily step counter: " + dailyStepCounter, Toast.LENGTH_SHORT);
-            updateDailyStepCounter(dailyStepCounter);// update your textView in the main layout
+            if(estaVisible()){
+                Bundle extras = intent.getExtras();
+                int dailyStepCounter = extras.getInt("dailyStepCounter");
+                Toast.makeText(getContext(), "Daily step counter: " + dailyStepCounter, Toast.LENGTH_SHORT);
+                updateDailyStepCounter(dailyStepCounter);// update your textView in the main layout
+            }
         }
     }
 

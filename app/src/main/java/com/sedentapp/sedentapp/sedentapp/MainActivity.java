@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity
 
     // To invoke the bound service, first make sure that this value
     // is not null.
-    private StepCounterService stepCounterService;
+    //private StepCounterService stepCounterService;
     private ReadDatabaseService readDatabaseService;
 
     private ServiceConnection stepCounterServiceConnection = new ServiceConnection() {
@@ -68,11 +68,11 @@ public class MainActivity extends AppCompatActivity
             // interact with the service.  Because we have bound to a explicit
             // service that we know is running in our own process, we can
             // cast its IBinder to a concrete class and directly access it.
-            stepCounterService = ((StepCounterService.LocalBinder)service).getService();
+           //stepCounterService = ((StepCounterService.LocalBinder)service).getService();
 
             // Tell the user about this for our demo.
-            Toast.makeText(MainActivity.this, "Step counter service connected",
-                    Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, "Step counter service connected",
+                    //Toast.LENGTH_SHORT).show();
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -80,9 +80,9 @@ public class MainActivity extends AppCompatActivity
             // unexpectedly disconnected -- that is, its process crashed.
             // Because it is running in our same process, we should never
             // see this happen.
-            stepCounterService = null;
-            Toast.makeText(MainActivity.this, "Step counter service disconnected",
-                    Toast.LENGTH_SHORT).show();
+            //stepCounterService = null;
+            //Toast.makeText(MainActivity.this, "Step counter service disconnected",
+                    //Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity
             // unexpectedly disconnected -- that is, its process crashed.
             // Because it is running in our same process, we should never
             // see this happen.
-            stepCounterService = null;
+            readDatabaseService = null;
             Toast.makeText(MainActivity.this, "Read data base service service disconnected",
                     Toast.LENGTH_SHORT).show();
         }
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "[MainActivity] onDestroy");
-        doUnbindStepCounterService();
+        //doUnbindStepCounterService();
         doUnbindReadDatabaseService();
     }
 
@@ -262,30 +262,30 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    void doBindStepCounterService() {
-        Log.d(TAG, "[MainActivity] doBindStepCounterService");
-        // Attempts to establish a connection with the service.  We use an
-        // explicit class name because we want a specific service
-        // implementation that we know will be running in our own process
-        // (and thus won't be supporting component replacement by other
-        // applications).
-        if (bindService(new Intent(MainActivity.this, StepCounterService.class),
-                stepCounterServiceConnection, Context.BIND_AUTO_CREATE)) {
-            mShouldUnbind = true;
-        } else {
-            Log.e(TAG, "Error: StepCounterService doesn't " +
-                    "exist, or this client isn't allowed access to it.");
-        }
-    }
+//    void doBindStepCounterService() {
+//        Log.d(TAG, "[MainActivity] doBindStepCounterService");
+//        // Attempts to establish a connection with the service.  We use an
+//        // explicit class name because we want a specific service
+//        // implementation that we know will be running in our own process
+//        // (and thus won't be supporting component replacement by other
+//        // applications).
+//        if (bindService(new Intent(MainActivity.this, StepCounterService.class),
+//                stepCounterServiceConnection, Context.BIND_AUTO_CREATE)) {
+//            mShouldUnbind = true;
+//        } else {
+//            Log.e(TAG, "Error: StepCounterService doesn't " +
+//                    "exist, or this client isn't allowed access to it.");
+//        }
+//    }
 
-    void doUnbindStepCounterService() {
-        Log.d(TAG, "[MainActivity] doUnbindStepCounterService");
-        if (mShouldUnbind) {
-            // Release information about the service's state.
-            unbindService(stepCounterServiceConnection);
-            mShouldUnbind = false;
-        }
-    }
+//    void doUnbindStepCounterService() {
+//        Log.d(TAG, "[MainActivity] doUnbindStepCounterService");
+//        if (mShouldUnbind) {
+//            // Release information about the service's state.
+//            unbindService(stepCounterServiceConnection);
+//            mShouldUnbind = false;
+//        }
+//    }
 
     void doBindReadDatabaseService() {
         Log.d(TAG, "[MainActivity] doBindReadDatabaseService");
