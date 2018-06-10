@@ -18,6 +18,7 @@ import com.sedentapp.sedentapp.sedentapp.entities.registropasos.service.Registro
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.TimerTask;
 
 public class CheckInactivityTask extends TimerTask {
@@ -71,11 +72,11 @@ public class CheckInactivityTask extends TimerTask {
         intent.setAction("com.sedentapp.update_inactivity_time_counter");
         this.context.sendBroadcast(intent);
 
-        int tiempoLimite = sharedPref.getInt("inactividad_list", 9999);
+        int tiempoLimite = Integer.parseInt(sharedPref.getString("inactividad_list", "9999"));
 
-        if ((tiempoLimite != -1) & (inactivityHours > tiempoLimite)) {
+        if ((tiempoLimite != -1) & ((inactivityHours*60) > tiempoLimite)) {
             NotificationHelper notificationHelper = new NotificationHelper(this.context);
-            notificationHelper.createNotification("Tiempo de inactividad demasiado alto!","Llevas " + inactivityHours + " horas inactivo");
+            notificationHelper.createNotification("Tiempo de inactividad demasiado alto!","Llevas " + inactivityHours + " horas inactivo", context);
         }
 
     }
