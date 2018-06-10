@@ -34,7 +34,7 @@ public class CheckInactivityTask extends TimerTask {
         this.mNotificationManager = mNotificationManager;
     }
 
-    private int getInactivityHours(List<RegistroPasos> registroPasosByDia, int now) {
+    private int getInactivityHours(List<RegistroPasos> registroPasosByDia) {
 
         int hora1 = 0;
         int hora2 = 0;
@@ -62,9 +62,8 @@ public class CheckInactivityTask extends TimerTask {
 
         List<RegistroPasos> registroPasosByDia = this.registroPasosService.getRegistroPasosByDia(this.context,
                 calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
-        int now = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
-        int inactivityHours = getInactivityHours(registroPasosByDia, now);
+        int inactivityHours = getInactivityHours(registroPasosByDia);
 
         Intent intent = new Intent();
         intent.putExtra("inactivityTime", inactivityHours);
