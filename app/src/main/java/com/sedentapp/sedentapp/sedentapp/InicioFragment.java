@@ -175,7 +175,7 @@ public class InicioFragment extends Fragment {
             if(estaVisible()){
                 Bundle extras = intent.getExtras();
                 long dailyStepCounter = extras.getLong("dailyStepCounter");
-                Toast.makeText(getContext(), "Daily step counter: " + dailyStepCounter, Toast.LENGTH_SHORT);
+                //Toast.makeText(getContext(), "Daily step counter: " + dailyStepCounter, Toast.LENGTH_SHORT);
                 updateDailyStepCounter(dailyStepCounter);// update your textView in the main layout
             }
         }
@@ -187,7 +187,7 @@ public class InicioFragment extends Fragment {
             if(estaVisible()){
                 Bundle extras = intent.getExtras();
                 int inactivityTime = extras.getInt("inactivityTime");
-                Toast.makeText(getContext(), "Inactivity time: " + inactivityTime, Toast.LENGTH_SHORT);
+                //Toast.makeText(getContext(), "Inactivity time: " + inactivityTime, Toast.LENGTH_SHORT);
 
                 TextView tv_inicio_tiempo_inactividad_valor = (TextView) getView().findViewById(R.id.tv_inicio_tiempo_inactividad_valor);
                 tv_inicio_tiempo_inactividad_valor.setText("" + inactivityTime);

@@ -59,7 +59,7 @@ public class CheckInactivityTask extends TimerTask {
 
         Intent intent = new Intent();
         intent.putExtra("inactivityTime", inactivityHours);
-        intent.setAction("com.sedentapp.com.sedentapp.update_inactivity_time_counter");
+        intent.setAction("com.sedentapp.update_inactivity_time_counter");
         this.context.sendBroadcast(intent);
 
 
