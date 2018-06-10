@@ -91,18 +91,13 @@ public class ReadDatabaseService extends Service {
 
         Log.d(TAG, "[ReadDatabaseService] updateDailyStepCounter");
 
-        int i, dailyStepCounter = 0;
         Calendar calendar = Calendar.getInstance();
-        List<RegistroPasos> registrosPasos = this.registroPasosService.getRegistroPasosByDia(this,
+        long steps = this.registroPasosService.getPasosByDia(this,
                 calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
-
-        for (i = 0; i < registrosPasos.size(); i++) {
-            dailyStepCounter = registrosPasos.get(i).getPasos();
-        }
 
         Intent intent = new Intent();
         intent.setAction("com.sedentapp.update_daily_step_counter");
-        intent.putExtra("dailyStepCounter", dailyStepCounter);
+        intent.putExtra("dailyStepCounter", steps);
         sendBroadcast(intent);
 
     }
