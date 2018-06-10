@@ -46,6 +46,7 @@ public class InicioFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private final UpdateDailyStepCounterBroadcastReceiver receiver = new UpdateDailyStepCounterBroadcastReceiver();
+    private final UpdateInactivityTimeBroadcastReceiver inactivityTimeReceiver = new UpdateInactivityTimeBroadcastReceiver();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -125,6 +126,10 @@ public class InicioFragment extends Fragment {
         intentFilter.addAction("com.sedentapp.update_daily_step_counter");
         getContext().registerReceiver(receiver, intentFilter);
 
+        IntentFilter inactivityTimeIntentFilter = new IntentFilter();
+        inactivityTimeIntentFilter.addAction("com.sedentapp.update_inactivity_time_counter");
+        getContext().registerReceiver(inactivityTimeReceiver, inactivityTimeIntentFilter);
+
         Intent intent = new Intent();
         intent.setAction("com.sedentapp.com.sedentapp.read_daily_step_counter");
         getContext().sendBroadcast(intent);
@@ -172,6 +177,21 @@ public class InicioFragment extends Fragment {
                 long dailyStepCounter = extras.getLong("dailyStepCounter");
                 Toast.makeText(getContext(), "Daily step counter: " + dailyStepCounter, Toast.LENGTH_SHORT);
                 updateDailyStepCounter(dailyStepCounter);// update your textView in the main layout
+            }
+        }
+    }
+
+    private class UpdateInactivityTimeBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(estaVisible()){
+                Bundle extras = intent.getExtras();
+                int inactivityTime = extras.getInt("inactivityTime");
+                Toast.makeText(getContext(), "Inactivity time: " + inactivityTime, Toast.LENGTH_SHORT);
+
+                TextView tv_inicio_tiempo_inactividad_valor = (TextView) getView().findViewById(R.id.tv_inicio_tiempo_inactividad_valor);
+                tv_inicio_tiempo_inactividad_valor.setText("" + inactivityTime);
+
             }
         }
     }
