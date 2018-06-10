@@ -31,7 +31,7 @@
         <!--android:title="@string/pref_title_add_friends_to_messages" />-->
 
     <ListPreference
-        android:defaultValue="180"
+        android:defaultValue="-1"
         android:entries="@array/pref_tiempo_inactividad_titulos"
         android:entryValues="@array/pref_tiempo_inactividad_valores"
         android:key="inactividad_list"
