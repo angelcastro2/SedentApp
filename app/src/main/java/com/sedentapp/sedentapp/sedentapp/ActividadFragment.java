@@ -115,7 +115,7 @@ public class ActividadFragment extends Fragment {
         fecha = calendar;
 
         for (RegistroPasos registroPaso : registroPasos){
-            dateList.add(registroPaso.getDia()+"/"+registroPaso.getMes()+"/"+registroPaso.getAno()+ " " + registroPaso.getHora()+":00");
+            dateList.add(registroPaso.getDia()+"/"+(registroPaso.getMes()+1)+"/"+registroPaso.getAno()+ " " + registroPaso.getHora()+":00");
             stepList.add(String.valueOf(registroPaso.getPasos()));
         }
 
@@ -255,7 +255,7 @@ public class ActividadFragment extends Fragment {
                 stepList.add(String.valueOf(registroPaso.getPasos()));
             }
             TextView textView = (TextView) view.findViewById(R.id.texto_fecha_grafica);
-            textView.setText(fecha.get(Calendar.DAY_OF_MONTH)+"/"+fecha.get(Calendar.MONTH)+"/"+fecha.get(Calendar.YEAR));
+            textView.setText(fecha.get(Calendar.DAY_OF_MONTH)+"/"+(fecha.get(Calendar.MONTH)+1)+"/"+fecha.get(Calendar.YEAR));
             dateArray = dateList.toArray(new String[dateList.size()]);
             stepsArray = stepList.toArray(new String[stepList.size()]);
 
@@ -306,7 +306,7 @@ public class ActividadFragment extends Fragment {
             }
 
             TextView textView = (TextView) view.findViewById(R.id.texto_fecha_grafica);
-            textView.setText(MES[fecha.get(Calendar.MONTH)]);
+            textView.setText(MES[fecha.get(Calendar.MONTH)]+" de "+fecha.get(Calendar.YEAR));
             dateArray = dateList.toArray(new String[dateList.size()]);
             stepsArray = stepList.toArray(new String[stepList.size()]);
 
