@@ -42,16 +42,19 @@ public class CheckInactivityTask extends TimerTask {
         int max_diff = 0;
         int diff = 0;
 
-        int lastHour = registroPasosByDia.get(registroPasosByDia.size()-1).getHora();
-        int now = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        if (registroPasosByDia.size() > 0) {
+            int lastHour = registroPasosByDia.get(registroPasosByDia.size()-1).getHora();
+            int now = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
-        int inactivityHours = now - lastHour;
-        Log.d(TAG, "[CheckInactivityTask]: inactivity hours: " + inactivityHours);
+            int inactivityHours = now - lastHour;
+            Log.d(TAG, "[CheckInactivityTask]: inactivity hours: " + inactivityHours);
 
-        if (inactivityHours > 0)
-            return inactivityHours;
-        else
-            return 0;
+            if (inactivityHours > 0)
+                return inactivityHours;
+        }
+
+        return 0;
+
     }
 
     public void run() {

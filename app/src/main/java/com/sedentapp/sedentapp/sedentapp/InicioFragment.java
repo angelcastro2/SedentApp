@@ -160,16 +160,18 @@ public class InicioFragment extends Fragment {
         int max_diff = 0;
         int diff = 0;
 
-        for (int i = 0; i < registroPasosByDia.size(); i++) {
-            hora2 = registroPasosByDia.get(i).getHora();
-            diff = hora2 - hora1;
-            if (diff > max_diff) {
-                max_diff = diff;
-                hora1 = hora2;
-            }
+        if (registroPasosByDia.size() > 0) {
+            int lastHour = registroPasosByDia.get(registroPasosByDia.size()-1).getHora();
+            int now = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+
+            int inactivityHours = now - lastHour;
+            Log.d(TAG, "[CheckInactivityTask]: inactivity hours: " + inactivityHours);
+
+            if (inactivityHours > 0)
+                return inactivityHours;
         }
 
-        return max_diff;
+        return 0;
     }
 
     public float[] buildValues(List<RegistroPasos> registroPasosByDia) {
