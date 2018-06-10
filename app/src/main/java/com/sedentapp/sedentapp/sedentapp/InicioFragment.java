@@ -124,18 +124,12 @@ public class InicioFragment extends Fragment {
         intent.setAction("com.sedentapp.com.sedentapp.read_daily_step_counter");
         getContext().sendBroadcast(intent);
 
+
         Calendar calendar = Calendar.getInstance();
-        List<RegistroPasos> registroPasos = this.registroPasosService.getRegistroPasosByDia(this.getContext(),
+        long steps = this.registroPasosService.getPasosByDia(this.getContext(),
                 calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
 
-        if (registroPasos.size() > 1) {
-            int steps = registroPasos.get(0).getPasos();
-            Log.d(TAG, "[InicioFragment] Pasos caminados en el día de hoy: " + steps);
-            updateDailyStepCounter(steps);
-        }
-        else {
-            Log.d(TAG, "[InicioFragment] No hay registro de pasos para el día actual");
-        }
+        updateDailyStepCounter(steps);
 
     }
 
@@ -149,7 +143,7 @@ public class InicioFragment extends Fragment {
         }
     }
 
-    private void updateDailyStepCounter(int dailyStepCounter) {
+    private void updateDailyStepCounter(long dailyStepCounter) {
         Log.d(TAG, "[InicioFragment] updateDailyStepCounter");
         TextView tv_inicio_pasos_valor = (TextView) getView().findViewById(R.id.tv_inicio_pasos_valor);
         tv_inicio_pasos_valor.setText("" + dailyStepCounter);
