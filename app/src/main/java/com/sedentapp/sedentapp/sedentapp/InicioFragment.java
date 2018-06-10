@@ -54,6 +54,8 @@ public class InicioFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private RegistroPasosService registroPasosService;
+
     private final String TAG = "SedentApp";
 
     public InicioFragment() {
@@ -82,6 +84,7 @@ public class InicioFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "[InicioFragment] onCreate");
+        this.registroPasosService = new RegistroPasosService();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -120,6 +123,19 @@ public class InicioFragment extends Fragment {
         Intent intent = new Intent();
         intent.setAction("com.sedentapp.com.sedentapp.read_daily_step_counter");
         getContext().sendBroadcast(intent);
+
+        Calendar calendar = Calendar.getInstance();
+        List<RegistroPasos> registroPasos = this.registroPasosService.getRegistroPasosByDia(this.getContext(),
+                calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
+
+        if (registroPasos.size() > 1) {
+            int steps = registroPasos.get(0).getPasos();
+            Log.d(TAG, "[InicioFragment] Pasos caminados en el día de hoy: " + steps);
+            updateDailyStepCounter(steps);
+        }
+        else {
+            Log.d(TAG, "[InicioFragment] No hay registro de pasos para el día actual");
+        }
 
     }
 
