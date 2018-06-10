@@ -16,6 +16,7 @@ import com.sedentapp.sedentapp.sedentapp.entities.registropasos.RegistroPasos;
 import com.sedentapp.sedentapp.sedentapp.entities.registropasos.service.RegistroPasosService;
 
 import java.util.Calendar;
+import java.util.Timer;
 
 import static android.content.pm.PackageManager.FEATURE_SENSOR_STEP_COUNTER;
 import static android.content.pm.PackageManager.FEATURE_SENSOR_STEP_DETECTOR;
@@ -44,6 +45,10 @@ public class StepsService extends Service implements SensorEventListener {
             Log.d(TAG, "[StepsService] Step detector sensor registered");
 
             this.registroPasosService = new RegistroPasosService();
+
+            Timer time = new Timer(); // Instantiate Timer Object
+            CheckInactivityTask st = new CheckInactivityTask(getApplicationContext()); // Instantiate SheduledTask class
+            time.schedule(st, 0, 1000*60); // Create Repetitively task for every 1 secs
 
         }
         else {
