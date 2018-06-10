@@ -97,12 +97,15 @@ public class InicioFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.d(TAG, "[InicioFragment] onStart");
+    }
+
+
+    public void updateChart(float[] values) {
 
         BarChartView chart = (BarChartView) this.getActivity().findViewById(R.id.chart);
         //llamamos a reset para evitar un crash de la app al volver del onPause
         chart.reset();
         String[] labels = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"};//horizontal axis
-        float[] values = {10f,20f,30f,40f,20f,100f,50f,30f,25f,5f,60f,10f,10f,20f,30f,40f,20f,100f,50f,30f,25f,5f,60f,10f}; //values
         BarSet dataset = new BarSet(labels, values);
         dataset.setColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
         chart.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.white, null));
@@ -110,6 +113,7 @@ public class InicioFragment extends Fragment {
         chart.setLabelsColor(ResourcesCompat.getColor(getResources(), R.color.black, null));
         chart.setAxisColor(ResourcesCompat.getColor(getResources(), R.color.black, null));
         chart.show();
+
     }
 
     @Override
@@ -125,12 +129,21 @@ public class InicioFragment extends Fragment {
         intent.setAction("com.sedentapp.com.sedentapp.read_daily_step_counter");
         getContext().sendBroadcast(intent);
 
-
         Calendar calendar = Calendar.getInstance();
         long steps = this.registroPasosService.getPasosByDia(this.getContext(),
                 calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
 
+        List<RegistroPasos> registroPasosByDia = this.registroPasosService.getRegistroPasosByDia(this.getContext(),
+                calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
+
+        float[] values = new float[registroPasosByDia.size()];
+        for (int i = 0; i < registroPasosByDia.size(); i++) {
+            values[i] = (float) registroPasosByDia.get(i).getPasos();
+        }
+
         updateDailyStepCounter(steps);
+
+        updateChart(values);
 
     }
 
