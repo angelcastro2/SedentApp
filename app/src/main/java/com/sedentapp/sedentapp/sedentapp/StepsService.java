@@ -70,8 +70,6 @@ public class StepsService extends Service implements SensorEventListener {
         Log.d(TAG, "[StepsService] onSensorChanged");
 
         String sensorName = event.sensor.getName();
-        Log.d(TAG, sensorName + ": X: " + event.values[0] + "; Y: " + event.values[1] + "; Z: " + event.values[2] + ";");
-
         if (sensorName.equals(this.mStepDetectorSensor.getName()) | event.sensor.equals(this.mStepDetectorSensor)) {
             Log.d(TAG, "[StepsService] STEP DETECTED!");
             int steps = (int) event.values[0];
