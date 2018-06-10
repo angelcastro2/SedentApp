@@ -1,7 +1,11 @@
 package com.sedentapp.sedentapp.sedentapp;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -17,14 +21,16 @@ public class CheckInactivityTask extends TimerTask {
 
     private RegistroPasosService registroPasosService;
     private Context context;
-    private NotificationCompat.Builder mBuilder;
+
+    private NotificationManager mNotificationManager;
 
     private final String TAG = "SedentApp";
 
-    public CheckInactivityTask(Context context) {
+    public CheckInactivityTask(Context context, NotificationManager mNotificationManager ) {
         Log.d(TAG, "[CheckInactivityTask] Constructor");
         this.registroPasosService = new RegistroPasosService();
         this.context = context;
+        this.mNotificationManager = mNotificationManager;
     }
 
     private int getInactivityHours(List<RegistroPasos> registroPasosByDia) {
@@ -62,6 +68,19 @@ public class CheckInactivityTask extends TimerTask {
         intent.setAction("com.sedentapp.update_inactivity_time_counter");
         this.context.sendBroadcast(intent);
 
+
+        Intent resultIntent = new Intent(this.context, MainActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(this.context, 0, resultIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        Notification.Builder mBuilder = new Notification.Builder(this.context) // builder notification
+                .setContentTitle("My notification")
+                .setContentText("Hello World!") .setWhen(System.currentTimeMillis())
+                .setVibrate(new long[]{0,100,200,300}).setLights(Color.RED, 2000, 1000)
+                .setTicker("New notification arrived!") // text shown when notification arrived
+                .addAction(android.R.drawable.ic_menu_share, "Share", pIntent) // max. 3 buttons
+                .setContentIntent(pIntent);
+
+        mNotificationManager.notify(0, mBuilder.build());
 
     }
 
