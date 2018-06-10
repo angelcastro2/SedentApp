@@ -249,7 +249,7 @@ public class ActividadFragment extends Fragment {
             stepList.clear();
 
             for (RegistroPasos registroPaso : registroPasos){
-                dateList.add(registroPaso.getHora()-1+":00 - "+registroPaso.getHora()+":00");
+                dateList.add(registroPaso.getHora()+":00 - "+(registroPaso.getHora()+1)+":00");
                 stepList.add(String.valueOf(registroPaso.getPasos()));
             }
             TextView textView = (TextView) view.findViewById(R.id.texto_fecha_grafica);
