@@ -156,7 +156,7 @@ public class InicioFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             if(estaVisible()){
                 Bundle extras = intent.getExtras();
-                int dailyStepCounter = extras.getInt("dailyStepCounter");
+                long dailyStepCounter = extras.getLong("dailyStepCounter");
                 Toast.makeText(getContext(), "Daily step counter: " + dailyStepCounter, Toast.LENGTH_SHORT);
                 updateDailyStepCounter(dailyStepCounter);// update your textView in the main layout
             }
