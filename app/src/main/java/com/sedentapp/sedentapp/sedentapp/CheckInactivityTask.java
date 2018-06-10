@@ -2,6 +2,8 @@ package com.sedentapp.sedentapp.sedentapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.sedentapp.sedentapp.sedentapp.entities.registropasos.RegistroPasos;
 import com.sedentapp.sedentapp.sedentapp.entities.registropasos.service.RegistroPasosService;
@@ -15,8 +17,12 @@ public class CheckInactivityTask extends TimerTask {
 
     private RegistroPasosService registroPasosService;
     private Context context;
+    private NotificationCompat.Builder mBuilder;
+
+    private final String TAG = "SedentApp";
 
     public CheckInactivityTask(Context context) {
+        Log.d(TAG, "[CheckInactivityTask] Constructor");
         this.registroPasosService = new RegistroPasosService();
         this.context = context;
     }
@@ -37,10 +43,12 @@ public class CheckInactivityTask extends TimerTask {
             }
         }
 
-        return 0;
+        return max_diff;
     }
 
     public void run() {
+
+        Log.d(TAG, "[CheckInactivityTask] run");
 
         Calendar calendar = Calendar.getInstance();
 
