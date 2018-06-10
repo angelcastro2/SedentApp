@@ -146,6 +146,29 @@ public class InicioFragment extends Fragment {
         float[] values = buildValues(registroPasosByDia);
         updateChart(values);
 
+        int inactivityHours = getInactivityHours(registroPasosByDia);
+        TextView tv_inicio_tiempo_inactividad_valor = (TextView) getView().findViewById(R.id.tv_inicio_tiempo_inactividad_valor);
+        tv_inicio_tiempo_inactividad_valor.setText("" + inactivityHours);
+
+    }
+
+    private int getInactivityHours(List<RegistroPasos> registroPasosByDia) {
+
+        int hora1 = 0;
+        int hora2 = 0;
+
+        int max_diff = 0;
+        int diff = 0;
+
+        for (int i = 0; i < registroPasosByDia.size(); i++) {
+            hora2 = registroPasosByDia.get(i).getHora();
+            diff = hora2 - hora1;
+            if (diff > max_diff) {
+                max_diff = diff;
+            }
+        }
+
+        return max_diff;
     }
 
     public float[] buildValues(List<RegistroPasos> registroPasosByDia) {
