@@ -44,6 +44,8 @@ import com.google.android.gms.fitness.result.DataSourcesResult;
 
 import java.util.concurrent.TimeUnit;
 
+import static android.content.pm.PackageManager.FEATURE_SENSOR_STEP_DETECTOR;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -142,17 +144,27 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.MainContainer,fragment);
         fragmentTransaction.commit();
 
-        //iniciamos el servicio de contar pasos
-        Intent mStepsIntent = new Intent(this.getApplicationContext(), StepsService.class);
-        startService(mStepsIntent);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "[MainActivity] onResume");
-        doBindStepCounterService();
+
+        if (this.getPackageManager().hasSystemFeature(FEATURE_SENSOR_STEP_DETECTOR) == false) {
+            Toast.makeText(MainActivity.this, "Cannot find step detector sensor",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else {
+            // Servicio de Google Fit
+            // doBindStepCounterService();
+
+            // Servicio de sensores a PELO (Ángel)
+            Intent mStepsIntent = new Intent(this.getApplicationContext(), StepsService.class);
+            startService(mStepsIntent);
+        }
+
+        // Servicio de acceso a base de datos
         doBindReadDatabaseService();
     }
 
