@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.provider.CalendarContract;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -33,7 +34,7 @@ public class CheckInactivityTask extends TimerTask {
         this.mNotificationManager = mNotificationManager;
     }
 
-    private int getInactivityHours(List<RegistroPasos> registroPasosByDia) {
+    private int getInactivityHours(List<RegistroPasos> registroPasosByDia, int now) {
 
         int hora1 = 0;
         int hora2 = 0;
@@ -41,16 +42,16 @@ public class CheckInactivityTask extends TimerTask {
         int max_diff = 0;
         int diff = 0;
 
-        for (int i = 0; i < registroPasosByDia.size(); i++) {
-            hora2 = registroPasosByDia.get(i).getHora();
-            diff = hora2 - hora1;
-            if (diff > max_diff) {
-                max_diff = diff;
-                hora1 = hora2;
-            }
-        }
+        int lastHour = registroPasosByDia.get(registroPasosByDia.size()-1).getHora();
+        int now = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
-        return max_diff;
+        int inactivityHours = now - lastHour;
+        Log.d(TAG, "[CheckInactivityTask]: inactivity hours: " + inactivityHours);
+
+        if (inactivityHours > 0)
+            return inactivityHours;
+        else
+            return 0;
     }
 
     public void run() {
@@ -61,8 +62,9 @@ public class CheckInactivityTask extends TimerTask {
 
         List<RegistroPasos> registroPasosByDia = this.registroPasosService.getRegistroPasosByDia(this.context,
                 calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
+        int now = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
-        int inactivityHours = getInactivityHours(registroPasosByDia);
+        int inactivityHours = getInactivityHours(registroPasosByDia, now);
 
         Intent intent = new Intent();
         intent.putExtra("inactivityTime", inactivityHours);
