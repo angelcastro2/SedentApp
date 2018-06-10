@@ -74,6 +74,7 @@ public class CheckInactivityTask extends TimerTask {
 
         int tiempoLimite = Integer.parseInt(sharedPref.getString("inactividad_list", "9999"));
 
+
         if ((tiempoLimite != -1) & ((inactivityHours*60) > tiempoLimite)) {
             NotificationHelper notificationHelper = new NotificationHelper(this.context);
             notificationHelper.createNotification("Tiempo de inactividad demasiado alto!","Llevas " + inactivityHours + " horas inactivo", context);
