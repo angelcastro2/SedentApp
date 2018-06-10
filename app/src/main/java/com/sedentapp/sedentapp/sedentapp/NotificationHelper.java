@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
@@ -45,6 +46,10 @@ public class NotificationHelper {
                     .setAutoCancel(false)
                     .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                     .setContentIntent(resultPendingIntent);
+
+            String strRingtonePreference = sharedPref.getString("notifications_new_message_ringtone", "content://settings/system/notification_sound");
+            Uri defaultSoundUri = Uri.parse(strRingtonePreference);
+            mBuilder.setSound(defaultSoundUri);
 
             mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
