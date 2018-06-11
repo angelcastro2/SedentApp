@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -27,6 +28,8 @@ public class ServiceCalibration extends Service {
     FusedLocationProviderClient mFusedLocationClient;
     double longitude;
     double latitude;
+
+     int MY_PERMISSIONS_REQUEST_FINE_LOCATION;
 
     public ServiceCalibration() {
     }
@@ -58,6 +61,7 @@ public class ServiceCalibration extends Service {
     }
 
     public void getLocation() {
+
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
