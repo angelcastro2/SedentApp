@@ -74,6 +74,11 @@
         </activity>
 
         <service
+            android:name=".ServiceCalibration"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <service
             android:name=".ReadDatabaseService"
             android:enabled="true"
             android:exported="true" />

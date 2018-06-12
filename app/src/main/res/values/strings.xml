@@ -62,6 +62,7 @@
 
     <!-- Perfil fragment -->
     <string name="nombre_perfil">Nombre Apellido</string>
+    <string name="nombre_usuario">Usuario Prueba</string>
     <string name="edad_perfil">Edad: </string>
     <string name="estatura_perfil">Estatura: </string>
     <string name="peso_perfil">Peso: </string>
