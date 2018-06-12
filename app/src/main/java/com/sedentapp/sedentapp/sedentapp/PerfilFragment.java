@@ -1,14 +1,24 @@
 package com.sedentapp.sedentapp.sedentapp;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +53,9 @@ public class PerfilFragment extends Fragment {
     private GoogleSignInClient mGoogleSignInClient;
     private LoginButton loginButton;
     private CallbackManager callbackManager;
+    boolean init_calibration_flag = true;
+
+    int MY_PERMISSIONS_REQUEST_FINE_LOCATION;
 
     public PerfilFragment() {
         // Required empty public constructor
@@ -96,6 +109,89 @@ public class PerfilFragment extends Fragment {
         return view;
     }
 
+    public void StoreCalibrationInitLocation(Location location){
+        SharedPreferences sharedInitialLocation = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedInitialLocation.edit();
+        editor.putFloat("initialLatitude", (float)location.getLatitude());
+        editor.putFloat("initialLongitude", (float)location.getLongitude());
+        editor.commit();
+
+        init_calibration_flag = false;
+    }
+
+    public void StoreCalibrationDistance(Location location){
+        SharedPreferences initialLocation = getActivity().getPreferences(Context.MODE_PRIVATE);
+        float initialLatitude = initialLocation.getFloat("initialLatitude", 0);
+        float initialLongitude = initialLocation.getFloat("initialLongitude", 0);
+
+        SharedPreferences calibrationDistance = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = calibrationDistance.edit();
+        editor.putFloat("laditudeDistance", initialLatitude - (float)location.getLatitude());
+        editor.putFloat("longitudeDistance", initialLongitude - (float) location.getLongitude());
+        editor.commit();
+
+        // reset the calibration flag to repeat calibration
+        init_calibration_flag = true;
+
+        // Show final distance, must be be modified
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+        alertDialog.setTitle("Calibración de pasos");
+        alertDialog.setMessage("La distancia recorrida es: \n" + calibrationDistance.getFloat("latitudeDistance", 0));
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            Bundle b = intent.getBundleExtra("location");
+            Location lastKnownLoc = (Location) b.getParcelable("location");
+            if (lastKnownLoc != null) {
+                if ( init_calibration_flag ){
+                    StoreCalibrationInitLocation(lastKnownLoc);
+                }else{
+                    StoreCalibrationDistance(lastKnownLoc);
+                }
+            }
+        }
+    };
+
+    private void checkLocationPermission(){
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this.getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }
+
 
     @Override
     public void onStart() {
@@ -134,16 +230,42 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-        ImageButton calibrateStepButton = (ImageButton) getView().findViewById(R.id.calibrate_step_button);
+        final Button calibrateStepButton = (Button) getView().findViewById(R.id.calibrate_step_button);
         // Capture button clicks
         calibrateStepButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
-                // Start NewActivity.class
-                Intent calibrationIntent = new Intent(getActivity(), CalibrationActivity.class);
-                startActivity(calibrationIntent);
+                checkLocationPermission();
+                if (init_calibration_flag) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                    alertDialog.setTitle("Calibración de pasos");
+                    alertDialog.setMessage("Se obtendrá tu ubicación. Pasea un poco y ...");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    calibrateStepButton.setText("Finalizar");
+                                    getActivity().startService(new Intent(getActivity(), ServiceCalibration.class));
+
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }else{
+                    calibrateStepButton.setText("Calibrar");
+                    getActivity().startService(new Intent(getActivity(), ServiceCalibration.class));
+
+                }
             }
         });
+
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(
+                mMessageReceiver, new IntentFilter("GPSLocation"));
 
         /*Button button2 = (Button) getView().findViewById(R.id.fb_login_button);
         button2.setOnClickListener(new View.OnClickListener() {

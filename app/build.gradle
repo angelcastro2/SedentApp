@@ -38,5 +38,4 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
     implementation 'com.google.android.gms:play-services-auth:11.6.0'
     implementation 'com.google.android.gms:play-services-fitness:11.6.0'
-
 }
