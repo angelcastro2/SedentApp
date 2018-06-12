@@ -2,7 +2,7 @@ package com.sedentapp.sedentapp.sedentapp;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
+//import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -230,7 +230,8 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-        final Button calibrateStepButton = (Button) getView().findViewById(R.id.calibrate_step_button);
+        final Button calibrateStepButton = (Button)getView().findViewById(R.id.calibrate_step_button);
+        calibrateStepButton.setText("Calibrar");
         // Capture button clicks
         calibrateStepButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
