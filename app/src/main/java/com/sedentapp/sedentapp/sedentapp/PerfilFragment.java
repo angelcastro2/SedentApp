@@ -1,8 +1,8 @@
 package com.sedentapp.sedentapp.sedentapp;
 
+import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.arch.persistence.room.Update;
+//import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,12 +12,17 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,6 +84,8 @@ public class PerfilFragment extends Fragment {
     private SharedPreferences myPreferences = null;
     private SharedPreferences.Editor myEditor = null;
     private boolean isLoggedIn;
+
+    int MY_PERMISSIONS_REQUEST_FINE_LOCATION;
 
     public PerfilFragment() {
         // Required empty public constructor
@@ -255,6 +262,35 @@ public class PerfilFragment extends Fragment {
         }
     };
 
+    private void checkLocationPermission(){
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this.getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }
+
 
     @Override
     public void onStart() {
@@ -293,11 +329,13 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-
         final Button calibrateStepButton = (Button) getView().findViewById(R.id.calibrate_step_button);
+        calibrateStepButton.setText("Calibrar");
         // Capture button clicks
         calibrateStepButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+
+                checkLocationPermission();
                 if (init_calibration_flag) {
                     AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
                     alertDialog.setTitle("Calibración de pasos");
