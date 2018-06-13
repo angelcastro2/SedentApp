@@ -51,7 +51,7 @@
     <string name="cancelar">Cancelar</string>
 
     <!-- Actividad fragment -->
-    <string name="actividad_mes">Abril</string>
+    <string name="actividad_no_datos">No existe información.</string>
 
     <!-- Actividad spinner -->
     <string-array name="spinner_actividad_array">
