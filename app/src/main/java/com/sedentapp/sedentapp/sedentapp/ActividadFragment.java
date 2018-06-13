@@ -115,7 +115,7 @@ public class ActividadFragment extends Fragment {
         fecha = calendar;
 
         for (RegistroPasos registroPaso : registroPasos){
-            dateList.add(registroPaso.getDia()+"/"+registroPaso.getMes()+"/"+registroPaso.getAno()+ " " + registroPaso.getHora()+":00");
+            dateList.add(registroPaso.getDia()+"/"+(registroPaso.getMes()+1)+"/"+registroPaso.getAno()+ " " + registroPaso.getHora()+":00");
             stepList.add(String.valueOf(registroPaso.getPasos()));
         }
 
@@ -126,7 +126,9 @@ public class ActividadFragment extends Fragment {
         listView = (ListView)view.findViewById(R.id.listview);
         listView.setAdapter(listActividad);
 
-
+        if (!registroPasos.isEmpty()){
+            view.findViewById(R.id.texto_no_datos).setVisibility(View.GONE);
+        }
         return view;
     }
 
@@ -253,7 +255,7 @@ public class ActividadFragment extends Fragment {
                 stepList.add(String.valueOf(registroPaso.getPasos()));
             }
             TextView textView = (TextView) view.findViewById(R.id.texto_fecha_grafica);
-            textView.setText(fecha.get(Calendar.DAY_OF_MONTH)+"/"+fecha.get(Calendar.MONTH)+"/"+fecha.get(Calendar.YEAR));
+            textView.setText(fecha.get(Calendar.DAY_OF_MONTH)+"/"+(fecha.get(Calendar.MONTH)+1)+"/"+fecha.get(Calendar.YEAR));
             dateArray = dateList.toArray(new String[dateList.size()]);
             stepsArray = stepList.toArray(new String[stepList.size()]);
 
@@ -304,7 +306,7 @@ public class ActividadFragment extends Fragment {
             }
 
             TextView textView = (TextView) view.findViewById(R.id.texto_fecha_grafica);
-            textView.setText(MES[fecha.get(Calendar.MONTH)]);
+            textView.setText(MES[fecha.get(Calendar.MONTH)]+" de "+fecha.get(Calendar.YEAR));
             dateArray = dateList.toArray(new String[dateList.size()]);
             stepsArray = stepList.toArray(new String[stepList.size()]);
 
@@ -448,14 +450,14 @@ public class ActividadFragment extends Fragment {
 
         /* AÑO 2 */
 
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,1,200),this.getContext());
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,2,100),this.getContext());
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,3,100),this.getContext());
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,4,500),this.getContext());
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,5,720),this.getContext());
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,6,360),this.getContext());
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,7,500),this.getContext());
-        this.registroPasosService.save(new RegistroPasos(2,3,2018,8,300),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,1,200),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,2,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,3,100),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,4,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,5,720),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,6,360),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,7,500),this.getContext());
+        this.registroPasosService.save(new RegistroPasos(10,5,2018,8,300),this.getContext());
 
         this.registroPasosService.save(new RegistroPasos(3,3,2018,1,100),this.getContext());
         this.registroPasosService.save(new RegistroPasos(3,3,2018,2,600),this.getContext());
